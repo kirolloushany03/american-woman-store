@@ -175,3 +175,12 @@ This document provides a comprehensive list of all RESTful API endpoints availab
 - **URL**: `/api/newsletter/subscribe`
 - **Method**: `POST`
 - **Request Body**: `email`
+
+### 6.3 Configuration
+- **URL**: `/api/config`
+- **Method**: `GET`
+- **Description**: Returns configuration settings, including the current backend base URL.
+
+### 6.4 User Alias Endpoints
+- **URL**: `/api/users/me` (Alias for `/api/auth/me` and `PUT` for profile update)
+- **URL**: `/api/users/me/change-password` (Alias for `/api/auth/change-password`)
