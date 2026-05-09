@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: american-women-store
+
+  # Force Spring MVC mode (servlet-based) instead of reactive
+  main:
+    web-application-type: servlet  # Use servlet (MVC) instead of reactive
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:mysql}:${DB_PORT:3306}/${DB_NAME:awstore}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USER:aw_user}
+    password: ${DB_PASS:aw_pass}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      continue-on-error: true
+      # Schema and data files will execute on startup
+      # INSERT IGNORE in data.sql prevents duplicate entries
+
+  # Spring Boot DevTools Configuration
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: static/**,public/**,templates/**
+    livereload:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8090}
+
+jwt:
+  secret: ${JWT_SECRET:default-secret-key-change-in-production-min-256-bits-please-use-a-long-random-string-here}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+logging:
+  level:
+    com.americanwomen.store: INFO
+    org.springframework.security: WARN
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+

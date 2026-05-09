@@ -1,0 +1,42 @@
+package store
+
+-- User invariants
+context User
+inv usernameNotEmpty: username <> null and username.size() > 0
+inv emailContainsAt: email <> null and email.indexOf('@') > 0
+inv roleValid: role = 'ROLE_USER' or role = 'ROLE_ADMIN'
+inv passwordMinLength: password <> null and password.size() >= 6
+inv phoneNumeric: phone = null or phone.matches('^[0-9]+$')
+
+-- Product invariants
+context Product
+inv sellingPricePositive: sellingPrice > 0.0
+inv stockQuantityNonNegative: stockQuantity >= 0
+inv salePercentageRange: salePercentage >= 0 and salePercentage <= 100
+inv onSaleImpliesPercentage: not onSale or salePercentage > 0
+
+-- Order invariants
+context Order
+inv totalEqualsSubtotalPlusShipping: total = subtotal + shippingFee
+inv hasAtLeastOneItem: items->size() >= 1
+inv confirmedOrdersCannotBeCancelled: 
+    (status = 'CONFIRMED' or status = 'SHIPPED' or status = 'DELIVERED') 
+    implies (status <> 'CANCELLED')
+inv returnOnlyWhenDelivered: 
+    returnStatus = 'REQUESTED' implies status = 'DELIVERED'
+inv confirmDeliveryOnlyWhenShipped:
+    -- This is validated in service layer, but documented here for completeness
+    -- The transition SHIPPED -> DELIVERED is enforced by OrderService.confirmDelivery()
+inv shippingZipNumeric: shippingZip = null or shippingZip.matches('^[0-9]+$')
+inv shippingPhoneNumeric: shippingPhone = null or shippingPhone.matches('^[0-9]+$')
+
+-- OrderItem invariants
+context OrderItem
+inv quantityPositive: quantity > 0
+inv priceSnapshotPositive: priceSnapshot > 0.0
+
+-- NewsletterSubscriber invariants
+context NewsletterSubscriber
+inv emailNotEmpty: email <> null and email.size() > 0
+inv emailContainsAt: email <> null and email.indexOf('@') > 0
+

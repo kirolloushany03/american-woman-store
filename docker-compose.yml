@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: awstore-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: awstore
+      MYSQL_USER: aw_user
+      MYSQL_PASSWORD: aw_pass
+    ports:
+      - "${MYSQL_HOST_PORT:-3308}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - awstore-network
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: awstore-eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - awstore-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: awstore-backend
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: awstore
+      DB_USER: aw_user
+      DB_PASS: aw_pass
+      JWT_SECRET: ${JWT_SECRET:-default-secret-key-change-in-production-min-256-bits-please-use-a-long-random-string-here}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+      SERVER_PORT: ${BACKEND_PORT:-8090}
+    ports:
+      - "${BACKEND_PORT:-8090}:${BACKEND_PORT:-8090}"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - awstore-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:${BACKEND_PORT:-8090}/api/config"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: awstore-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - backend
+    networks:
+      - awstore-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: awstore-frontend
+    environment:
+      BACKEND_PORT: ${BACKEND_PORT:-8090}
+    ports:
+      - "${FRONTEND_PORT:-8091}:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - awstore-network
+
+volumes:
+  mysql_data:
+
+networks:
+  awstore-network:
+    driver: bridge

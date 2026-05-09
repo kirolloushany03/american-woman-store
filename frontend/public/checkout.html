@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - American Women Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body data-page="checkout">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">American Women Store</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="auth-area" id="authArea">
+                        <a href="login.html" class="btn btn-outline-light">Sign in</a>
+                    </div>
+                    <a href="cart.html" class="btn btn-outline-light position-relative">
+                        Cart <span class="badge bg-danger" id="cartBadge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="mb-4">Shipping Information</h2>
+                <form id="checkoutForm">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="shippingName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control" id="shippingAddress" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" id="shippingCity" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" id="shippingState" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">ZIP</label>
+                            <input type="text" class="form-control" id="shippingZip" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="shippingPhone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-truck me-2"></i>Shipping Method</label>
+                        <select class="form-select" id="shippingMethod" required onchange="updateShippingCost()">
+                            <option value="STANDARD">Standard Shipping - $20.00 (5-7 business days)</option>
+                            <option value="EXPRESS">Express Shipping - $35.00 (2-3 business days)</option>
+                            <option value="OVERNIGHT">Overnight Shipping - $50.00 (Next business day)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-credit-card me-2"></i>Payment Method</label>
+                        <select class="form-select" id="paymentMethod" required onchange="toggleCardFieldsDirect()">
+                            <option value="COD">Cash on Delivery</option>
+                            <option value="CARD">Visa / Credit Card</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Card Payment Fields (hidden by default) -->
+                    <div id="cardDetails" class="d-none" style="margin-top: 16px;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Card Holder Name</label>
+                                <input id="cardHolderName" class="form-control" placeholder="Name on card" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Card Brand</label>
+                                <select id="cardBrand" class="form-select">
+                                    <option value="VISA">VISA</option>
+                                    <option value="MASTERCARD">MASTERCARD</option>
+                                    <option value="AMEX">American Express</option>
+                                    <option value="DISCOVER">Discover</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Card Number</label>
+                                <input id="cardNumber" class="form-control" placeholder="4111 1111 1111 1111" maxlength="19" />
+                                <small class="text-muted">We only save last 4 digits.</small>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Expiry (MM/YY)</label>
+                                <input id="cardExpiry" class="form-control" placeholder="12/30" maxlength="5" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">CVV</label>
+                                <input id="cardCvv" class="form-control" placeholder="123" maxlength="4" />
+                                <small class="text-muted">Not stored.</small>
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-3 mb-0">
+                            <small><i class="bi bi-shield-check me-1"></i>Your card information is secure. We never store your full card number, CVV, or expiry date.</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-check-circle me-2"></i>Place Order
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Order Summary</div>
+                    <div class="card-body" id="orderSummary">
+                        <!-- Loaded via JS -->
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span id="orderSubtotal">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span id="orderShipping">$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total:</strong>
+                            <strong id="orderTotal">$0.00</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2026 American Women Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/app.js"></script>
+    <script>
+        // Simple, direct toggle function - GLOBAL
+        window.toggleCardFieldsDirect = function() {
+            var select = document.getElementById('paymentMethod');
+            var cardDiv = document.getElementById('cardDetails');
+            
+            if (!select || !cardDiv) {
+                console.error('Elements not found', {select: !!select, cardDiv: !!cardDiv});
+                return;
+            }
+            
+            if (select.value === 'CARD') {
+                cardDiv.classList.remove('d-none');
+                cardDiv.style.display = 'block';
+                // Make fields required
+                var inputs = cardDiv.querySelectorAll('input, select');
+                inputs.forEach(function(input) {
+                    input.setAttribute('required', 'required');
+                });
+                console.log('Card fields shown');
+            } else {
+                cardDiv.classList.add('d-none');
+                cardDiv.style.display = 'none';
+                // Remove required and clear values
+                var inputs = cardDiv.querySelectorAll('input, select');
+                inputs.forEach(function(input) {
+                    input.removeAttribute('required');
+                    if (input.tagName === 'INPUT') {
+                        input.value = '';
+                    } else if (input.tagName === 'SELECT') {
+                        input.selectedIndex = 0;
+                    }
+                });
+                console.log('Card fields hidden');
+            }
+        }
+        
+        // Setup when page loads - multiple ways to ensure it works
+        function setupCardToggle() {
+            var select = document.getElementById('paymentMethod');
+            var cardDiv = document.getElementById('cardDetails');
+            
+            if (select && cardDiv) {
+                // Initial state
+                toggleCardFieldsDirect();
+                
+                // Add change listener (remove old ones first)
+                var newSelect = select.cloneNode(true);
+                select.parentNode.replaceChild(newSelect, select);
+                newSelect.addEventListener('change', toggleCardFieldsDirect);
+                
+                // Format card number
+                var cardNumber = document.getElementById('cardNumber');
+                if (cardNumber && !cardNumber.hasAttribute('data-formatted')) {
+                    cardNumber.setAttribute('data-formatted', 'true');
+                    cardNumber.addEventListener('input', function(e) {
+                        var val = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+                        var formatted = val.match(/.{1,4}/g);
+                        if (formatted) {
+                            e.target.value = formatted.join(' ').substring(0, 19);
+                        } else {
+                            e.target.value = val.substring(0, 19);
+                        }
+                    });
+                }
+                
+                // Format expiry
+                var expiry = document.getElementById('cardExpiry');
+                if (expiry && !expiry.hasAttribute('data-formatted')) {
+                    expiry.setAttribute('data-formatted', 'true');
+                    expiry.addEventListener('input', function(e) {
+                        var val = e.target.value.replace(/\D/g, '').substring(0, 4);
+                        if (val.length >= 3) {
+                            val = val.substring(0, 2) + '/' + val.substring(2);
+                        }
+                        e.target.value = val;
+                    });
+                }
+                
+                // CVV numbers only
+                var cvv = document.getElementById('cardCvv');
+                if (cvv && !cvv.hasAttribute('data-formatted')) {
+                    cvv.setAttribute('data-formatted', 'true');
+                    cvv.addEventListener('input', function(e) {
+                        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+                    });
+                }
+                
+                console.log('Card fields setup complete');
+                return true;
+            } else {
+                console.error('Could not find paymentMethod or cardDetails', {
+                    select: !!select,
+                    cardDiv: !!cardDiv
+                });
+                return false;
+            }
+        }
+        
+        // Try multiple times to ensure it works
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!setupCardToggle()) {
+                    setTimeout(setupCardToggle, 100);
+                    setTimeout(setupCardToggle, 500);
+                }
+            });
+        } else {
+            if (!setupCardToggle()) {
+                setTimeout(setupCardToggle, 100);
+                setTimeout(setupCardToggle, 500);
+            }
+        }
+        
+        window.addEventListener('load', function() {
+            setupCardToggle();
+        });
+    </script>
+</body>
+</html>
+

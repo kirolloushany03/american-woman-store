@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>American Women Store - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body data-page="home">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">American Women Store</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <button class="btn btn-link text-white" id="searchToggle">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                        <div class="search-expand" id="searchExpand" style="display: none;">
+                            <input type="text" class="form-control" id="globalSearch" placeholder="Search products...">
+                        </div>
+                    </div>
+                    <div class="auth-area" id="authArea">
+                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#authModal">Sign in</button>
+                    </div>
+                    <a href="cart.html" class="btn btn-outline-light position-relative">
+                        Cart <span class="badge bg-danger" id="cartBadge">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section vh-100 d-flex align-items-center justify-content-center text-center text-white">
+        <div class="hero-content">
+            <h1 class="display-1 fw-bold mb-4" id="heroTitle">American Women Store</h1>
+            <p class="lead mb-5" id="heroSubtitle">Fashion that empowers. Style that inspires.</p>
+            <div class="hero-buttons">
+                <a href="shop.html" class="btn btn-light btn-lg me-3">Shop Now</a>
+                <a href="offers.html" class="btn btn-outline-light btn-lg">View Offers</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">New Arrivals</h2>
+            <div class="row g-4" id="newArrivals">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Flash Sale</h2>
+            <div class="row g-4" id="flashSale">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Best Sellers</h2>
+            <div class="row g-4" id="bestSellers">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Exclusive Membership Section -->
+    <section class="exclusive-membership-section py-5" style="background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%); position: relative; overflow: hidden;">
+        <!-- Decorative Background Elements -->
+        <div class="bg-decoration" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+            <div style="position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -150px; left: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(118, 75, 162, 0.08) 0%, transparent 70%); border-radius: 50%;"></div>
+        </div>
+
+        <div class="container position-relative" style="z-index: 1;">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <div class="section-badge mb-4">
+                        <span style="display: inline-block; padding: 10px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                            <i class="bi bi-star-fill me-2"></i>VIP Membership Program
+                        </span>
+                    </div>
+                    <h2 class="display-4 fw-bold mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Join the Elite Style Circle
+                    </h2>
+                    <p class="lead text-muted mb-5" style="font-size: 1.2rem;">
+                        Be part of an exclusive community of <span id="subscriberCount" class="fw-bold" style="color: #667eea;">thousands</span> fashion-forward women who get access to premium perks and insider benefits
+                    </p>
+                </div>
+            </div>
+
+            <!-- Membership Tiers -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="membership-card h-100 p-4 rounded-4 position-relative" style="background: white; border: 2px solid #e9ecef; transition: all 0.3s; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                        <div class="card-icon mb-4 text-center">
+                            <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(253, 203, 110, 0.3);">
+                                <i class="bi bi-gem" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 class="fw-bold text-center mb-3">Bronze Member</h4>
+                        <ul class="list-unstyled mb-4" style="min-height: 200px;">
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>10% off on first order</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>Early access to sales</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>Monthly style newsletter</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>Free shipping over $150</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="membership-card h-100 p-4 rounded-4 position-relative" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: 3px solid #667eea; transition: all 0.3s; box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4); transform: scale(1.05);">
+                        <div class="popular-badge" style="position: absolute; top: -15px; right: 20px; background: #FFE066; color: #333; padding: 5px 20px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                            MOST POPULAR
+                        </div>
+                        <div class="card-icon mb-4 text-center">
+                            <div style="width: 80px; height: 80px; margin: 0 auto; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3);">
+                                <i class="bi bi-star-fill" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 class="fw-bold text-center mb-3 text-white">Silver Member</h4>
+                        <ul class="list-unstyled mb-4" style="min-height: 200px; color: white;">
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #FFE066;"></i>15% off on all orders</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #FFE066;"></i>Priority customer support</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #FFE066;"></i>Exclusive member-only sales</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #FFE066;"></i>Free shipping on all orders</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #FFE066;"></i>Birthday surprise gift</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="membership-card h-100 p-4 rounded-4 position-relative" style="background: white; border: 2px solid #e9ecef; transition: all 0.3s; box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                        <div class="card-icon mb-4 text-center">
+                            <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);">
+                                <i class="bi bi-trophy-fill" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 class="fw-bold text-center mb-3">Gold Member</h4>
+                        <ul class="list-unstyled mb-4" style="min-height: 200px;">
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>20% off on all orders</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>VIP personal stylist access</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>First access to new collections</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>Free express shipping</li>
+                            <li class="mb-3"><i class="bi bi-check-circle-fill me-2" style="color: #667eea;"></i>Quarterly luxury gift box</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subscription Form -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="subscription-box p-5 rounded-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 2px dashed rgba(102, 126, 234, 0.3);">
+                        <h3 class="text-center fw-bold mb-4" style="color: #333;">Start Your Journey Today</h3>
+                        <form id="newsletterForm">
+                            <div id="newsletterMessage" class="alert d-none mb-4" style="border-radius: 15px;"></div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control form-control-lg" id="newsletterEmail" placeholder="Your email address" required 
+                                           style="border-radius: 12px; border: 2px solid #dee2e6; padding: 15px 20px; font-size: 1rem; transition: all 0.3s;">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control form-control-lg" id="newsletterFirstName" placeholder="First name (optional)" 
+                                           style="border-radius: 12px; border: 2px solid #dee2e6; padding: 15px 20px; font-size: 1rem; transition: all 0.3s;">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-lg w-100 fw-bold text-white" id="newsletterSubmitBtn" 
+                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; padding: 18px 30px; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);">
+                                <i class="bi bi-arrow-right-circle-fill me-2"></i>Join the Community
+                            </button>
+                            <p class="text-center text-muted small mt-4 mb-0">
+                                <i class="bi bi-shield-check me-1"></i>Secure signup. We'll never share your information.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .membership-card {
+                cursor: pointer;
+            }
+            .membership-card:hover {
+                transform: translateY(-10px) scale(1.02) !important;
+                box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3) !important;
+            }
+            .membership-card:hover .card-icon > div {
+                transform: rotate(5deg) scale(1.1);
+                transition: transform 0.3s;
+            }
+            #newsletterEmail:focus, #newsletterFirstName:focus {
+                border-color: #667eea !important;
+                box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1) !important;
+                outline: none;
+            }
+            #newsletterSubmitBtn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5) !important;
+            }
+            #newsletterSubmitBtn:active {
+                transform: translateY(-1px);
+            }
+            @media (max-width: 768px) {
+                .membership-card[style*="transform: scale(1.05)"] {
+                    transform: scale(1) !important;
+                }
+                .membership-card:hover {
+                    transform: translateY(-5px) !important;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="p-4">
+                        <i class="bi bi-truck" style="font-size: 3rem; color: #667eea;"></i>
+                        <h4 class="mt-3">Free Shipping</h4>
+                        <p class="text-muted">Free shipping on orders over $200. Fast and reliable delivery to your doorstep.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4">
+                        <i class="bi bi-arrow-counterclockwise" style="font-size: 3rem; color: #667eea;"></i>
+                        <h4 class="mt-3">Easy Returns</h4>
+                        <p class="text-muted">Not satisfied? Return within 30 days for a full refund. No questions asked.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-4">
+                        <i class="bi bi-shield-check" style="font-size: 3rem; color: #667eea;"></i>
+                        <h4 class="mt-3">Secure Payment</h4>
+                        <p class="text-muted">Your payment information is safe and secure with our encrypted checkout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ul class="nav nav-tabs w-100" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Sign In</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Register</button>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content" id="authTabContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <div id="loginModalMessage" class="alert" style="display: none;"></div>
+                            <form id="loginModalForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="loginModalUsername" placeholder="Enter your username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="loginModalPassword" placeholder="Enter your password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                            </form>
+                            <div class="text-center mt-3">
+                                <p class="mb-0"><small>Don't have an account? <a href="register.html">Register here</a></small></p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <div id="registerModalMessage" class="alert" style="display: none;"></div>
+                            <form id="registerModalForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="regModalUsername" placeholder="Choose a username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="regModalEmail" placeholder="Enter your email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="regModalPassword" placeholder="Choose a password (minimum 6 characters)" required minlength="6">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="regModalFirstName" placeholder="First name (optional)">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="regModalLastName" placeholder="Last name (optional)">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                            </form>
+                            <div class="text-center mt-3">
+                                <p class="mb-0"><small>Already have an account? <a href="login.html">Sign in here</a></small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2026 American Women Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/animations.js"></script>
+    <script src="/assets/js/app.js"></script>
+</body>
+</html>
+

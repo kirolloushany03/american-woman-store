@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: american-women-store-test
+
+  datasource:
+    # Will be overridden by Testcontainers dynamically
+    url: jdbc:tc:mysql:8.0:///awstore?TC_INITSCRIPT=init-test.sql
+    username: test
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  sql:
+    init:
+      mode: never  # Disable SQL init scripts in tests (we'll seed manually)
+
+server:
+  port: 0  # Random port for tests
+
+jwt:
+  secret: test-secret-key-for-testing-only-min-256-bits-please-use-a-long-random-string-here
+  expiration-ms: 86400000
+
+logging:
+  level:
+    com.americanwomen.store: DEBUG
+    org.springframework.security: WARN
+    org.testcontainers: INFO
+
