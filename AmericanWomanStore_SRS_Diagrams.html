@@ -212,6 +212,9 @@
   .s5 .section-num { color: var(--steel); }
   .s5 .section-title { color: var(--steel); }
   .s5 .section-tag { background: var(--steel-light); color: var(--steel); }
+  .s7 .section-num { color: #c0392b; }
+  .s7 .section-title { color: #c0392b; }
+  .s7 .section-tag { background: #fde8e8; color: #c0392b; }
 
   footer {
     text-align: center;
@@ -237,6 +240,7 @@
     <span class="badge" style="border-color:var(--plum);color:var(--plum)">Class</span>
     <span class="badge" style="border-color:var(--steel);color:var(--steel)">ERD</span>
     <span class="badge" style="border-color:var(--ink);color:var(--ink)">Architecture</span>
+    <span class="badge" style="border-color:#c0392b;color:#c0392b">OCL</span>
   </div>
 </header>
 
@@ -247,6 +251,7 @@
   <a href="#sec4" class="toc-btn">04 · Class</a>
   <a href="#sec5" class="toc-btn">05 · ERD</a>
   <a href="#sec6" class="toc-btn">06 · Cloud Architecture</a>
+  <a href="#sec7" class="toc-btn">07 · OCL Constraints</a>
 </nav>
 
 <main>
@@ -1396,6 +1401,206 @@
         class Eureka registry;
         class DB db;
     </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     7. OCL CONSTRAINTS
+══════════════════════════════════════════════ -->
+<section id="sec7" class="diagram-section s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">OCL Constraints</h2>
+    <span class="section-tag">Object Constraint Language</span>
+  </div>
+  <p class="section-desc">Formal OCL invariants defined in <code>store.ocl</code> and enforced at runtime by <code>OclValidationService</code>. Each constraint is validated before persistence — violations throw structured <code>OclValidationException</code> responses with invariant name, field, and message.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1100 1020" xmlns="http://www.w3.org/2000/svg" width="1100" height="1020">
+      <rect width="1100" height="1020" fill="#fffdf9"/>
+      <text x="550" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#c0392b">OCL Constraints — store.ocl</text>
+      <text x="550" y="55" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="13" fill="#888">Runtime invariants enforced by OclValidationService before every create / update operation</text>
+
+      <!-- ── CONTEXT: User ── -->
+      <g transform="translate(30,80)">
+        <rect width="500" height="200" rx="5" fill="#fff0f3" stroke="#c0392b" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#c0392b"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#fde8e8" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">User</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">usernameNotEmpty:</text>
+        <text x="200" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">username &lt;&gt; null and username.size() &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailContainsAt:</text>
+        <text x="200" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.indexOf('@') &gt; 0</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">roleValid:</text>
+        <text x="200" y="108" font-family="DM Mono,monospace" font-size="10" fill="#888">role = 'ROLE_USER' or role = 'ROLE_ADMIN'</text>
+
+        <text x="16" y="134" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="134" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">passwordMinLength:</text>
+        <text x="200" y="134" font-family="DM Mono,monospace" font-size="10" fill="#888">password &lt;&gt; null and password.size() &gt;= 6</text>
+
+        <text x="16" y="160" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="160" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">phoneNumeric:</text>
+        <text x="200" y="160" font-family="DM Mono,monospace" font-size="10" fill="#888">phone = null or phone.matches('^[0-9]+$')</text>
+
+        <!-- field badges -->
+        <rect x="16" y="175" width="65" height="16" rx="3" fill="#fde8e8" stroke="#c0392b" stroke-width="0.5"/>
+        <text x="48" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#c0392b">5 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: Product ── -->
+      <g transform="translate(570,80)">
+        <rect width="500" height="200" rx="5" fill="#fdf0e8" stroke="#b8892e" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#b8892e"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#f5e9cb" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">Product</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">sellingPricePositive:</text>
+        <text x="230" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">sellingPrice &gt; 0.0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">stockQuantityNonNegative:</text>
+        <text x="260" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">stockQuantity &gt;= 0</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">salePercentageRange:</text>
+        <text x="230" y="108" font-family="DM Mono,monospace" font-size="10" fill="#888">salePercentage &gt;= 0 and salePercentage &lt;= 100</text>
+
+        <text x="16" y="134" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="134" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">onSaleImpliesPercentage:</text>
+        <text x="255" y="134" font-family="DM Mono,monospace" font-size="10" fill="#888">not onSale or salePercentage &gt; 0</text>
+
+        <rect x="16" y="175" width="65" height="16" rx="3" fill="#fdf0e8" stroke="#b8892e" stroke-width="0.5"/>
+        <text x="48" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#b8892e">4 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: Order ── -->
+      <g transform="translate(30,320)">
+        <rect width="500" height="280" rx="5" fill="#ddeadf" stroke="#5a7a5e" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#5a7a5e"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#ddeadf" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">Order</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">totalEqualsSubtotalPlusShipping:</text>
+        <text x="310" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">total = subtotal + shippingFee</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">hasAtLeastOneItem:</text>
+        <text x="220" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">items-&gt;size() &gt;= 1</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">confirmedOrdersCannotBeCancelled:</text>
+        <text x="45" y="122" font-family="DM Mono,monospace" font-size="10" fill="#888">(status = 'CONFIRMED' or 'SHIPPED' or 'DELIVERED') implies status &lt;&gt; 'CANCELLED'</text>
+
+        <text x="16" y="148" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="148" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">returnOnlyWhenDelivered:</text>
+        <text x="260" y="148" font-family="DM Mono,monospace" font-size="10" fill="#888">returnStatus = 'REQUESTED' implies status = 'DELIVERED'</text>
+
+        <text x="16" y="174" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="174" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">confirmDeliveryOnlyWhenShipped:</text>
+        <text x="300" y="174" font-family="DM Mono,monospace" font-size="10" fill="#888">transition SHIPPED → DELIVERED enforced</text>
+
+        <text x="16" y="200" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="200" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">shippingZipNumeric:</text>
+        <text x="230" y="200" font-family="DM Mono,monospace" font-size="10" fill="#888">shippingZip = null or shippingZip.matches('^[0-9]+$')</text>
+
+        <text x="16" y="226" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="226" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">shippingPhoneNumeric:</text>
+        <text x="240" y="226" font-family="DM Mono,monospace" font-size="10" fill="#888">shippingPhone = null or shippingPhone.matches('^[0-9]+$')</text>
+
+        <rect x="16" y="253" width="65" height="16" rx="3" fill="#ddeadf" stroke="#5a7a5e" stroke-width="0.5"/>
+        <text x="48" y="264" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#5a7a5e">7 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: OrderItem ── -->
+      <g transform="translate(570,320)">
+        <rect width="500" height="130" rx="5" fill="#e8d8ea" stroke="#5e3460" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#5e3460"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#e8d8ea" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">OrderItem</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">quantityPositive:</text>
+        <text x="200" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">quantity &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">priceSnapshotPositive:</text>
+        <text x="230" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">priceSnapshot &gt; 0.0</text>
+
+        <rect x="16" y="103" width="65" height="16" rx="3" fill="#e8d8ea" stroke="#5e3460" stroke-width="0.5"/>
+        <text x="48" y="114" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#5e3460">2 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: NewsletterSubscriber ── -->
+      <g transform="translate(570,490)">
+        <rect width="500" height="130" rx="5" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#2d4a6b"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#d5e2f0" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">NewsletterSubscriber</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#2d4a6b" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailNotEmpty:</text>
+        <text x="180" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.size() &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#2d4a6b" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailContainsAt:</text>
+        <text x="195" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.indexOf('@') &gt; 0</text>
+
+        <rect x="16" y="103" width="65" height="16" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="0.5"/>
+        <text x="48" y="114" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2d4a6b">2 invariants</text>
+      </g>
+
+      <!-- ── ENFORCEMENT FLOW ── -->
+      <g transform="translate(30,660)">
+        <rect width="1040" height="100" rx="5" fill="white" stroke="#e2d8c8" stroke-width="1"/>
+        <text x="520" y="20" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888" letter-spacing="2">RUNTIME ENFORCEMENT FLOW</text>
+
+        <!-- Flow boxes -->
+        <rect x="20" y="35" width="170" height="42" rx="4" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+        <text x="105" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">Service Layer</text>
+        <text x="105" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">create() / update()</text>
+
+        <text x="210" y="60" font-family="DM Mono,monospace" font-size="16" fill="#b8892e">→</text>
+
+        <rect x="235" y="35" width="200" height="42" rx="4" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="335" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c0392b">OclValidationService</text>
+        <text x="335" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">validate(entity)</text>
+
+        <text x="455" y="60" font-family="DM Mono,monospace" font-size="16" fill="#b8892e">→</text>
+
+        <rect x="480" y="35" width="140" height="42" rx="4" fill="#d5ead7" stroke="#5a7a5e" stroke-width="1.5"/>
+        <text x="550" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#5a7a5e">✓ Pass</text>
+        <text x="550" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">persist to DB</text>
+
+        <text x="640" y="60" font-family="DM Mono,monospace" font-size="11" fill="#888">|</text>
+
+        <rect x="670" y="35" width="140" height="42" rx="4" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="740" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c0392b">✗ Fail</text>
+        <text x="740" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">OclValidationException</text>
+
+        <text x="830" y="60" font-family="DM Mono,monospace" font-size="16" fill="#c0392b">→</text>
+
+        <rect x="855" y="35" width="165" height="42" rx="4" fill="#f5f0fa" stroke="#5e3460" stroke-width="1.5"/>
+        <text x="937" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">400 Bad Request</text>
+        <text x="937" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">{invariant, field, msg}</text>
+      </g>
+
+      <!-- Summary box -->
+      <g transform="translate(30,790)">
+        <rect width="1040" height="50" rx="5" fill="#faf6ef" stroke="#e2d8c8" stroke-width="1"/>
+        <text x="520" y="20" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888" letter-spacing="2">SUMMARY</text>
+        <text x="130" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">5 Contexts</text>
+        <text x="350" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">20 Invariants</text>
+        <text x="580" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">Source: store.ocl</text>
+        <text x="830" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">Enforced: OclValidationService.java</text>
+      </g>
+    </svg>
   </div>
 </section>
 
