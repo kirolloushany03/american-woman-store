@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>American Woman Store — SRS Diagrams</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1008;
+    --cream: #faf6ef;
+    --rose: #c8607a;
+    --rose-light: #f0d6dc;
+    --gold: #b8892e;
+    --gold-light: #f5e9cb;
+    --sage: #5a7a5e;
+    --sage-light: #ddeadf;
+    --plum: #5e3460;
+    --plum-light: #e8d8ea;
+    --steel: #2d4a6b;
+    --steel-light: #d5e2f0;
+    --bg-diagram: #fffdf9;
+    --border: #e2d8c8;
+    --shadow: rgba(26,16,8,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(200,96,122,0.07) 18px,
+      rgba(200,96,122,0.07) 19px
+    );
+  }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 0.75rem;
+    position: relative;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    position: relative;
+  }
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: rgba(250,246,239,0.6);
+    margin-top: 0.6rem;
+    position: relative;
+  }
+  .header-badges {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    position: relative;
+  }
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+
+  /* NAV */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 2px solid var(--rose);
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,246,239,0.65);
+    background: transparent;
+    border: 1px solid rgba(250,246,239,0.15);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .toc-btn:hover, .toc-btn.active {
+    color: var(--cream);
+    border-color: var(--rose);
+    background: rgba(200,96,122,0.18);
+  }
+
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* SECTION */
+  .diagram-section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 60px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.12;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  .section-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    margin-left: auto;
+  }
+  .section-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: #5a4a38;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* DIAGRAM BOX */
+  .diagram-box {
+    background: var(--bg-diagram);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    overflow-x: auto;
+    box-shadow: 0 2px 16px var(--shadow);
+  }
+  .diagram-box svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* SVG SHARED */
+  .d-title { font-family: 'Playfair Display', serif; font-weight: 700; }
+  .d-label { font-family: 'DM Mono', monospace; font-size: 12px; }
+  .d-small { font-family: 'DM Mono', monospace; font-size: 10px; }
+  .d-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; }
+
+  /* COLOR CLASSES BY SECTION */
+  .s1 .section-num { color: var(--rose); }
+  .s1 .section-title { color: var(--rose); }
+  .s1 .section-tag { background: var(--rose-light); color: var(--rose); }
+  .s2 .section-num { color: var(--gold); }
+  .s2 .section-title { color: var(--gold); }
+  .s2 .section-tag { background: var(--gold-light); color: var(--gold); }
+  .s3 .section-num { color: var(--sage); }
+  .s3 .section-title { color: var(--sage); }
+  .s3 .section-tag { background: var(--sage-light); color: var(--sage); }
+  .s4 .section-num { color: var(--plum); }
+  .s4 .section-title { color: var(--plum); }
+  .s4 .section-tag { background: var(--plum-light); color: var(--plum); }
+  .s5 .section-num { color: var(--steel); }
+  .s5 .section-title { color: var(--steel); }
+  .s5 .section-tag { background: var(--steel-light); color: var(--steel); }
+  .s7 .section-num { color: #c0392b; }
+  .s7 .section-title { color: #c0392b; }
+  .s7 .section-tag { background: #fde8e8; color: #c0392b; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(26,16,8,0.35);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-label">Software Requirements Specification</div>
+  <h1 class="header-title">American Woman Store</h1>
+  <p class="header-sub">Complete SRS Diagram Suite — Spring Boot + MySQL E-Commerce Platform</p>
+  <div class="header-badges">
+    <span class="badge" style="border-color:var(--rose);color:var(--rose)">Use Case</span>
+    <span class="badge" style="border-color:var(--gold);color:var(--gold)">Activity</span>
+    <span class="badge" style="border-color:var(--sage);color:var(--sage)">Sequence</span>
+    <span class="badge" style="border-color:var(--plum);color:var(--plum)">Class</span>
+    <span class="badge" style="border-color:var(--steel);color:var(--steel)">ERD</span>
+    <span class="badge" style="border-color:var(--ink);color:var(--ink)">Architecture</span>
+    <span class="badge" style="border-color:#c0392b;color:#c0392b">OCL</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#sec1" class="toc-btn">01 · Use Case</a>
+  <a href="#sec2" class="toc-btn">02 · Activity</a>
+  <a href="#sec3" class="toc-btn">03 · Sequence</a>
+  <a href="#sec4" class="toc-btn">04 · Class</a>
+  <a href="#sec5" class="toc-btn">05 · ERD</a>
+  <a href="#sec6" class="toc-btn">06 · Cloud Architecture</a>
+  <a href="#sec7" class="toc-btn">07 · OCL Constraints</a>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════════
+     1. USE CASE DIAGRAM
+══════════════════════════════════════════════ -->
+<section id="sec1" class="diagram-section s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Use Case Diagram</h2>
+    <span class="section-tag">UML</span>
+  </div>
+  <p class="section-desc">Actors: Guest, Registered User, and Admin. Shows all primary system interactions including browsing, authentication, cart management, checkout, and admin operations.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1100 780" xmlns="http://www.w3.org/2000/svg" width="1100" height="780">
+      <defs>
+        <marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+        </marker>
+        <marker id="darrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#c8607a"/>
+        </marker>
+      </defs>
+      <!-- Background -->
+      <rect width="1100" height="780" fill="#fffdf9"/>
+
+      <!-- Title -->
+      <text x="550" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#c8607a">Use Case Diagram — American Woman Store</text>
+
+      <!-- System boundary -->
+      <rect x="200" y="55" width="700" height="700" rx="6" fill="none" stroke="#c8607a" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="550" y="75" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a" letter-spacing="2">AMERICAN WOMAN STORE SYSTEM</text>
+
+      <!-- ── ACTORS ── -->
+      <!-- Guest -->
+      <ellipse cx="75" cy="200" rx="22" ry="22" fill="none" stroke="#888" stroke-width="1.5"/>
+      <line x1="75" y1="222" x2="75" y2="285" stroke="#888" stroke-width="1.5"/>
+      <line x1="45" y1="248" x2="105" y2="248" stroke="#888" stroke-width="1.5"/>
+      <line x1="75" y1="285" x2="45" y2="315" stroke="#888" stroke-width="1.5"/>
+      <line x1="75" y1="285" x2="105" y2="315" stroke="#888" stroke-width="1.5"/>
+      <text x="75" y="335" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" fill="#5a4a38" font-weight="500">Guest</text>
+
+      <!-- Registered User -->
+      <ellipse cx="75" cy="480" rx="22" ry="22" fill="none" stroke="#c8607a" stroke-width="2"/>
+      <line x1="75" y1="502" x2="75" y2="565" stroke="#c8607a" stroke-width="2"/>
+      <line x1="45" y1="528" x2="105" y2="528" stroke="#c8607a" stroke-width="2"/>
+      <line x1="75" y1="565" x2="45" y2="595" stroke="#c8607a" stroke-width="2"/>
+      <line x1="75" y1="565" x2="105" y2="595" stroke="#c8607a" stroke-width="2"/>
+      <text x="75" y="615" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" fill="#c8607a" font-weight="500">Registered</text>
+      <text x="75" y="630" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" fill="#c8607a" font-weight="500">User</text>
+
+      <!-- Admin -->
+      <ellipse cx="1025" cy="400" rx="22" ry="22" fill="none" stroke="#5e3460" stroke-width="2"/>
+      <line x1="1025" y1="422" x2="1025" y2="485" stroke="#5e3460" stroke-width="2"/>
+      <line x1="995" y1="448" x2="1055" y2="448" stroke="#5e3460" stroke-width="2"/>
+      <line x1="1025" y1="485" x2="995" y2="515" stroke="#5e3460" stroke-width="2"/>
+      <line x1="1025" y1="485" x2="1055" y2="515" stroke="#5e3460" stroke-width="2"/>
+      <text x="1025" y="535" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" fill="#5e3460" font-weight="500">Admin</text>
+
+      <!-- ── USE CASES — Column 1 (left) ── -->
+      <!-- Browse Products -->
+      <ellipse cx="360" cy="110" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="115" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Browse Products</text>
+
+      <!-- Search Products -->
+      <ellipse cx="360" cy="175" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="180" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Search / Filter</text>
+
+      <!-- View Product Detail -->
+      <ellipse cx="360" cy="240" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="245" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">View Product Detail</text>
+
+      <!-- Register -->
+      <ellipse cx="360" cy="305" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="310" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Register Account</text>
+
+      <!-- Login -->
+      <ellipse cx="360" cy="370" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="375" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Login</text>
+
+      <!-- Contact -->
+      <ellipse cx="360" cy="435" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="440" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Contact Us</text>
+
+      <!-- View Offers -->
+      <ellipse cx="360" cy="500" rx="110" ry="22" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="360" y="505" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">View Flash Sale / Offers</text>
+
+      <!-- ── USE CASES — Column 2 (right, user-only) ── -->
+      <!-- Manage Cart -->
+      <ellipse cx="700" cy="110" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="115" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Manage Cart</text>
+
+      <!-- Checkout -->
+      <ellipse cx="700" cy="175" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="180" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Checkout / Place Order</text>
+
+      <!-- Track Order -->
+      <ellipse cx="700" cy="240" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="245" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Track Order</text>
+
+      <!-- Request Return -->
+      <ellipse cx="700" cy="305" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="310" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Request Return</text>
+
+      <!-- Update Profile -->
+      <ellipse cx="700" cy="370" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="375" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Update Profile</text>
+
+      <!-- Change Password -->
+      <ellipse cx="700" cy="435" rx="110" ry="22" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="700" y="440" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Change Password</text>
+
+      <!-- ── ADMIN USE CASES ── -->
+      <ellipse cx="700" cy="530" rx="110" ry="22" fill="#ede8f5" stroke="#5e3460" stroke-width="1.5"/>
+      <text x="700" y="535" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460">Manage Products</text>
+
+      <ellipse cx="700" cy="595" rx="110" ry="22" fill="#ede8f5" stroke="#5e3460" stroke-width="1.5"/>
+      <text x="700" y="600" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460">Manage Orders</text>
+
+      <ellipse cx="700" cy="660" rx="110" ry="22" fill="#ede8f5" stroke="#5e3460" stroke-width="1.5"/>
+      <text x="700" y="665" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460">Manage Returns</text>
+
+      <ellipse cx="700" cy="725" rx="110" ry="22" fill="#ede8f5" stroke="#5e3460" stroke-width="1.5"/>
+      <text x="700" y="730" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460">Manage Users</text>
+
+      <!-- ── GUEST → Use Cases ── -->
+      <line x1="97" y1="200" x2="248" y2="130" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="210" x2="248" y2="178" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="220" x2="248" y2="242" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="230" x2="248" y2="305" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="238" x2="248" y2="368" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="245" x2="248" y2="435" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="97" y1="252" x2="248" y2="500" stroke="#aaa" stroke-width="1.2" marker-end="url(#arrow1)"/>
+
+      <!-- ── USER → Use Cases ── -->
+      <line x1="97" y1="480" x2="248" y2="370" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="485" x2="248" y2="435" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="488" x2="248" y2="500" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="492" x2="588" y2="110" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="496" x2="588" y2="175" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="500" x2="588" y2="240" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="504" x2="588" y2="305" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="508" x2="588" y2="370" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+      <line x1="97" y1="512" x2="588" y2="435" stroke="#c8607a" stroke-width="1.2" marker-end="url(#darrow1)"/>
+
+      <!-- ── ADMIN → Admin Use Cases ── -->
+      <line x1="1003" y1="400" x2="812" y2="530" stroke="#5e3460" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="1003" y1="405" x2="812" y2="595" stroke="#5e3460" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="1003" y1="410" x2="812" y2="660" stroke="#5e3460" stroke-width="1.2" marker-end="url(#arrow1)"/>
+      <line x1="1003" y1="415" x2="812" y2="725" stroke="#5e3460" stroke-width="1.2" marker-end="url(#arrow1)"/>
+
+      <!-- Generalization: User extends Guest (dashed) -->
+      <line x1="75" y1="340" x2="75" y2="455" stroke="#c8607a" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="82" y="400" font-family="DM Mono,monospace" font-size="9" fill="#c8607a" letter-spacing="1">«extends»</text>
+
+      <!-- Legend -->
+      <rect x="215" y="630" width="340" height="110" rx="3" fill="white" stroke="#e2d8c8" stroke-width="1"/>
+      <text x="385" y="650" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888" letter-spacing="2">LEGEND</text>
+      <ellipse cx="240" cy="668" rx="16" ry="10" fill="#fff0f3" stroke="#c8607a" stroke-width="1"/>
+      <text x="265" y="672" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">Guest + User Use Case</text>
+      <ellipse cx="240" cy="693" rx="16" ry="10" fill="#fdf0e8" stroke="#b8892e" stroke-width="1"/>
+      <text x="265" y="697" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">Registered User Only</text>
+      <ellipse cx="240" cy="718" rx="16" ry="10" fill="#ede8f5" stroke="#5e3460" stroke-width="1"/>
+      <text x="265" y="722" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">Admin Only</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     2. ACTIVITY DIAGRAM — Checkout Flow
+══════════════════════════════════════════════ -->
+<section id="sec2" class="diagram-section s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Activity Diagram</h2>
+    <span class="section-tag">Checkout Flow</span>
+  </div>
+  <p class="section-desc">Models the complete checkout activity flow: from browsing products through cart management, authentication, payment selection (COD or Card), order confirmation, and the full order lifecycle including shipping and returns.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 900 1200" xmlns="http://www.w3.org/2000/svg" width="900" height="1200">
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#b8892e"/>
+        </marker>
+        <marker id="arr2b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+        </marker>
+      </defs>
+      <rect width="900" height="1200" fill="#fffdf9"/>
+      <text x="450" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#b8892e">Activity Diagram — Checkout Flow</text>
+
+      <!-- Swim lanes -->
+      <rect x="30" y="55" width="260" height="1110" rx="0" fill="#fdf8ef" stroke="#e2d8c8" stroke-width="1"/>
+      <rect x="320" y="55" width="260" height="1110" rx="0" fill="#fff8fb" stroke="#e2d8c8" stroke-width="1"/>
+      <rect x="610" y="55" width="270" height="1110" rx="0" fill="#f8faf8" stroke="#e2d8c8" stroke-width="1"/>
+      <!-- Lane headers -->
+      <rect x="30" y="55" width="260" height="32" fill="#fdf0e8"/>
+      <text x="160" y="77" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="500" letter-spacing="1">CUSTOMER</text>
+      <rect x="320" y="55" width="260" height="32" fill="#fff0f3"/>
+      <text x="450" y="77" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a" font-weight="500" letter-spacing="1">FRONTEND / SYSTEM</text>
+      <rect x="610" y="55" width="270" height="32" fill="#f0ede8"/>
+      <text x="745" y="77" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38" font-weight="500" letter-spacing="1">BACKEND / DATABASE</text>
+
+      <!-- Helper macros: activities as rounded rects, decisions as diamonds -->
+      <!-- START -->
+      <circle cx="160" cy="115" r="14" fill="#b8892e"/>
+      <line x1="160" y1="129" x2="160" y2="155" stroke="#b8892e" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- Browse Store -->
+      <rect x="75" y="155" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="178" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Browse Store</text>
+      <line x1="160" y1="191" x2="160" y2="218" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Select Product -->
+      <rect x="75" y="218" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="241" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Select Product</text>
+      <line x1="245" y1="236" x2="370" y2="236" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- View Product (System) -->
+      <rect x="365" y="218" width="170" height="36" rx="18" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="450" y="241" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c8607a">Display Product Detail</text>
+      <line x1="535" y1="236" x2="660" y2="236" stroke="#888" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+      <!-- Fetch Product (DB) -->
+      <rect x="655" y="218" width="175" height="36" rx="18" fill="#f0ede8" stroke="#888" stroke-width="1.5"/>
+      <text x="742" y="241" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">GET /api/products/{id}</text>
+
+      <!-- Back arrow from System to Customer -->
+      <line x1="160" y1="254" x2="160" y2="290" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Add to Cart Decision -->
+      <polygon points="160,290 220,320 160,350 100,320" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="316" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#b8892e">Add to Cart?</text>
+      <text x="160" y="329" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#b8892e">(size, color)</text>
+
+      <!-- No → Continue browsing -->
+      <line x1="100" y1="320" x2="55" y2="320" stroke="#888" stroke-width="1.2"/>
+      <line x1="55" y1="320" x2="55" y2="180" stroke="#888" stroke-width="1.2"/>
+      <line x1="55" y1="180" x2="75" y2="180" stroke="#888" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <text x="78" y="314" font-family="DM Mono,monospace" font-size="9" fill="#888">No</text>
+
+      <!-- Yes → -->
+      <line x1="160" y1="350" x2="160" y2="378" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <text x="168" y="368" font-family="DM Mono,monospace" font-size="9" fill="#b8892e">Yes</text>
+
+      <!-- Add to Cart (action) -->
+      <rect x="75" y="378" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="401" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Add to Cart</text>
+      <line x1="245" y1="396" x2="365" y2="396" stroke="#c8607a" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- POST /cart (system) -->
+      <rect x="365" y="378" width="170" height="36" rx="18" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="450" y="396" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">POST /api/cart</text>
+      <text x="450" y="409" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#c8607a">(JWT required)</text>
+      <line x1="535" y1="396" x2="655" y2="396" stroke="#888" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+      <!-- Save cart (DB) -->
+      <rect x="655" y="378" width="175" height="36" rx="18" fill="#f0ede8" stroke="#888" stroke-width="1.5"/>
+      <text x="742" y="401" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">Save cart_items</text>
+
+      <!-- Arrow down -->
+      <line x1="160" y1="414" x2="160" y2="445" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Proceed to Checkout? -->
+      <polygon points="160,445 220,475 160,505 100,475" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="471" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#b8892e">Proceed to</text>
+      <text x="160" y="484" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#b8892e">Checkout?</text>
+      <!-- No → keep browsing (loop) -->
+      <line x1="100" y1="475" x2="60" y2="475" stroke="#888" stroke-width="1.2"/>
+      <line x1="60" y1="475" x2="60" y2="218" stroke="#888" stroke-width="1.2"/>
+      <line x1="60" y1="218" x2="75" y2="218" stroke="#888" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <text x="78" y="469" font-family="DM Mono,monospace" font-size="9" fill="#888">No</text>
+
+      <!-- Yes -->
+      <line x1="160" y1="505" x2="160" y2="535" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <text x="168" y="524" font-family="DM Mono,monospace" font-size="9" fill="#b8892e">Yes</text>
+
+      <!-- Logged in? -->
+      <polygon points="450,535 510,565 450,595 390,565" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="450" y="561" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">Logged In?</text>
+      <!-- Arrow from Customer to System -->
+      <line x1="160" y1="535" x2="388" y2="562" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- No → Login -->
+      <line x1="390" y1="565" x2="330" y2="565" stroke="#888" stroke-width="1.2"/>
+      <line x1="330" y1="565" x2="160" y2="565" stroke="#888" stroke-width="1.2"/>
+      <line x1="160" y1="565" x2="160" y2="600" stroke="#888" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <text x="280" y="558" font-family="DM Mono,monospace" font-size="9" fill="#888">No → Login Required</text>
+
+      <!-- Login Action -->
+      <rect x="75" y="600" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="623" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Enter Credentials</text>
+      <line x1="245" y1="618" x2="388" y2="618" stroke="#c8607a" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- POST /login (system) -->
+      <rect x="365" y="600" width="170" height="36" rx="18" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="450" y="618" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">POST /api/auth/login</text>
+      <text x="450" y="631" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#c8607a">→ JWT Token</text>
+
+      <!-- Yes / after login → Fill Shipping -->
+      <line x1="510" y1="565" x2="610" y2="565" stroke="#c8607a" stroke-width="1.2"/>
+      <text x="555" y="558" font-family="DM Mono,monospace" font-size="9" fill="#c8607a">Yes</text>
+      <line x1="610" y1="565" x2="610" y2="660" stroke="#c8607a" stroke-width="1.2"/>
+      <line x1="450" y1="636" x2="450" y2="660" stroke="#c8607a" stroke-width="1.2"/>
+      <line x1="450" y1="660" x2="245" y2="660" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Fill Shipping Info -->
+      <rect x="75" y="642" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="660" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#b8892e">Fill Shipping Info</text>
+      <text x="160" y="673" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#b8892e">&amp; Payment Method</text>
+
+      <line x1="160" y1="678" x2="160" y2="712" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Payment Method Decision -->
+      <polygon points="160,712 220,742 160,772 100,742" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="738" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#b8892e">Payment?</text>
+      <text x="160" y="751" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#b8892e">COD / CARD</text>
+
+      <!-- COD branch -->
+      <line x1="100" y1="742" x2="55" y2="742" stroke="#888" stroke-width="1.2"/>
+      <line x1="55" y1="742" x2="55" y2="820" stroke="#888" stroke-width="1.2"/>
+      <line x1="55" y1="820" x2="75" y2="820" stroke="#888" stroke-width="1.2" marker-end="url(#arr2b)"/>
+      <text x="58" y="737" font-family="DM Mono,monospace" font-size="9" fill="#888">COD</text>
+
+      <!-- CARD branch -->
+      <line x1="160" y1="772" x2="160" y2="800" stroke="#888" stroke-width="1.2"/>
+      <text x="168" y="790" font-family="DM Mono,monospace" font-size="9" fill="#888">CARD</text>
+
+      <!-- Enter Card Details -->
+      <rect x="75" y="800" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="823" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Enter Card Details</text>
+      <line x1="160" y1="836" x2="160" y2="858" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Merge point for COD/CARD -->
+      <!-- Confirm Order -->
+      <rect x="75" y="858" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="881" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Confirm Order</text>
+      <line x1="245" y1="876" x2="365" y2="876" stroke="#c8607a" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- POST /checkout (system) -->
+      <rect x="365" y="858" width="170" height="36" rx="18" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+      <text x="450" y="876" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">POST /api/orders/checkout</text>
+      <text x="450" y="889" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#c8607a">Create Order</text>
+      <line x1="535" y1="876" x2="655" y2="876" stroke="#888" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+      <!-- Save Order (DB) -->
+      <rect x="655" y="858" width="175" height="36" rx="18" fill="#f0ede8" stroke="#888" stroke-width="1.5"/>
+      <text x="742" y="876" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">Save orders +</text>
+      <text x="742" y="889" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">order_items</text>
+
+      <!-- Order Confirmed notification -->
+      <line x1="160" y1="894" x2="160" y2="930" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <rect x="75" y="930" width="170" height="36" rx="18" fill="#d5ead7" stroke="#5a7a5e" stroke-width="1.5"/>
+      <text x="160" y="953" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e">Order Confirmed ✓</text>
+      <line x1="160" y1="966" x2="160" y2="998" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+      <!-- Track Order -->
+      <rect x="75" y="998" width="170" height="36" rx="18" fill="#fdf0e8" stroke="#b8892e" stroke-width="1.5"/>
+      <text x="160" y="1021" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e">Track Order Status</text>
+
+      <!-- END -->
+      <line x1="160" y1="1034" x2="160" y2="1060" stroke="#b8892e" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <circle cx="160" cy="1075" r="14" fill="none" stroke="#b8892e" stroke-width="3"/>
+      <circle cx="160" cy="1075" r="9" fill="#b8892e"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     3. SEQUENCE DIAGRAM — Login & Place Order
+══════════════════════════════════════════════ -->
+<section id="sec3" class="diagram-section s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Sequence Diagram</h2>
+    <span class="section-tag">Login + Order Flow</span>
+  </div>
+  <p class="section-desc">Shows the temporal message flow between: Browser (User), Frontend JS, AuthController, ProductController, CartController, OrderController, AuthService, JwtUtil, and the MySQL Database across two main scenarios: Authentication and Place Order.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1060 920" xmlns="http://www.w3.org/2000/svg" width="1060" height="920">
+      <defs>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5a7a5e"/>
+        </marker>
+        <marker id="arr3r" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+          <path d="M8,0 L8,6 L0,3 z" fill="#5a7a5e"/>
+        </marker>
+        <marker id="arr3dash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#aaa"/>
+        </marker>
+      </defs>
+      <rect width="1060" height="920" fill="#fffdf9"/>
+      <text x="530" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#5a7a5e">Sequence Diagram — Authentication &amp; Place Order</text>
+
+      <!-- Lifeline headers -->
+      <!-- User: 60, Frontend: 180, AuthCtrl: 310, ProductCtrl: 430, CartCtrl: 550, OrderCtrl: 670, AuthSvc: 790, DB: 980 -->
+      <!-- column x positions -->
+      <g font-family="DM Mono,monospace" font-size="10" fill="#fff" text-anchor="middle">
+        <rect x="20" y="45" width="80" height="44" rx="4" fill="#5a7a5e"/>
+        <text x="60" y="64" fill="white">Browser</text>
+        <text x="60" y="78" fill="white">(User)</text>
+
+        <rect x="138" y="45" width="84" height="44" rx="4" fill="#5a7a5e"/>
+        <text x="180" y="64" fill="white">Frontend</text>
+        <text x="180" y="78" fill="white">JS / api.js</text>
+
+        <rect x="265" y="45" width="90" height="44" rx="4" fill="#c8607a"/>
+        <text x="310" y="64" fill="white">Auth</text>
+        <text x="310" y="78" fill="white">Controller</text>
+
+        <rect x="385" y="45" width="90" height="44" rx="4" fill="#c8607a"/>
+        <text x="430" y="64" fill="white">Product</text>
+        <text x="430" y="78" fill="white">Controller</text>
+
+        <rect x="505" y="45" width="90" height="44" rx="4" fill="#c8607a"/>
+        <text x="550" y="64" fill="white">Cart</text>
+        <text x="550" y="78" fill="white">Controller</text>
+
+        <rect x="625" y="45" width="90" height="44" rx="4" fill="#c8607a"/>
+        <text x="670" y="64" fill="white">Order</text>
+        <text x="670" y="78" fill="white">Controller</text>
+
+        <rect x="745" y="45" width="90" height="44" rx="4" fill="#b8892e"/>
+        <text x="790" y="64" fill="white">Auth</text>
+        <text x="790" y="78" fill="white">Service</text>
+
+        <rect x="910" y="45" width="120" height="44" rx="4" fill="#2d4a6b"/>
+        <text x="970" y="64" fill="white">MySQL</text>
+        <text x="970" y="78" fill="white">Database</text>
+      </g>
+
+      <!-- Lifelines (dashed vertical) -->
+      <g stroke="#ccc" stroke-width="1" stroke-dasharray="5,4">
+        <line x1="60"  y1="89" x2="60"  y2="915"/>
+        <line x1="180" y1="89" x2="180" y2="915"/>
+        <line x1="310" y1="89" x2="310" y2="915"/>
+        <line x1="430" y1="89" x2="430" y2="915"/>
+        <line x1="550" y1="89" x2="550" y2="915"/>
+        <line x1="670" y1="89" x2="670" y2="915"/>
+        <line x1="790" y1="89" x2="790" y2="915"/>
+        <line x1="970" y1="89" x2="970" y2="915"/>
+      </g>
+
+      <!-- Activation boxes -->
+      <g fill="rgba(90,122,94,0.15)" stroke="#5a7a5e" stroke-width="1">
+        <rect x="56"  y="120" width="8" height="440"/>
+        <rect x="176" y="130" width="8" height="420"/>
+        <rect x="306" y="145" width="8" height="100"/>
+        <rect x="306" y="310" width="8" height="60"/>
+        <rect x="786" y="148" width="8" height="94"/>
+        <rect x="306" y="500" width="8" height="40"/>
+        <rect x="546" y="510" width="8" height="100"/>
+        <rect x="666" y="615" width="8" height="100"/>
+        <rect x="966" y="148" width="8" height="560"/>
+      </g>
+
+      <!-- SCENARIO 1: LOGIN -->
+      <text x="60" y="115" font-family="Playfair Display,serif" font-size="13" font-style="italic" fill="#5a7a5e">① Login Flow</text>
+
+      <!-- 1: User clicks login -->
+      <line x1="64" y1="130" x2="172" y2="130" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="116" y="125" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">click Login</text>
+
+      <!-- 2: POST /api/auth/login -->
+      <line x1="184" y1="148" x2="302" y2="148" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="243" y="143" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">POST /api/auth/login</text>
+
+      <!-- 3: authService.login() -->
+      <line x1="314" y1="162" x2="782" y2="162" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="548" y="157" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">authService.login(request)</text>
+
+      <!-- 4: SELECT user from DB -->
+      <line x1="794" y1="176" x2="962" y2="176" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="878" y="171" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">SELECT * FROM users</text>
+
+      <!-- 5: return user row -->
+      <line x1="962" y1="195" x2="798" y2="195" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="880" y="190" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">User row</text>
+
+      <!-- 6: BCrypt verify + generateToken -->
+      <line x1="790" y1="210" x2="790" y2="240" stroke="#5a7a5e" stroke-width="1.5"/>
+      <text x="820" y="225" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">BCrypt.matches()</text>
+      <text x="820" y="238" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">+ generateToken()</text>
+
+      <!-- 7: return AuthResponse (token + user) -->
+      <line x1="782" y1="255" x2="318" y2="255" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="550" y="250" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">AuthResponse {token, user}</text>
+
+      <!-- 8: 200 OK response -->
+      <line x1="302" y1="270" x2="188" y2="270" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="245" y="265" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">200 OK + JWT</text>
+
+      <!-- 9: store token, update UI -->
+      <line x1="176" y1="285" x2="68" y2="285" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="122" y="280" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">localStorage.setItem(token)</text>
+
+      <!-- DIVIDER -->
+      <line x1="30" y1="305" x2="1040" y2="305" stroke="#e2d8c8" stroke-width="1" stroke-dasharray="8,4"/>
+      <text x="530" y="320" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-style="italic" fill="#c8607a">② Browse Product &amp; Add to Cart</text>
+
+      <!-- GET /products -->
+      <line x1="64" y1="335" x2="172" y2="335" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="116" y="329" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">navigate to /shop</text>
+      <line x1="184" y1="350" x2="422" y2="350" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="303" y="344" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">GET /api/products</text>
+      <line x1="434" y1="362" x2="962" y2="362" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="698" y="356" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">SELECT * FROM products</text>
+      <line x1="962" y1="377" x2="438" y2="377" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="700" y="371" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">Product list</text>
+      <line x1="422" y1="392" x2="188" y2="392" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <line x1="176" y1="407" x2="68" y2="407" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="122" y="402" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">Render products</text>
+
+      <!-- POST /cart -->
+      <line x1="64" y1="430" x2="172" y2="430" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="116" y="424" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">click Add to Cart</text>
+      <line x1="184" y1="445" x2="542" y2="445" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="363" y="439" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">POST /api/cart (Bearer token)</text>
+      <line x1="554" y1="460" x2="962" y2="460" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="758" y="454" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">INSERT cart_items</text>
+      <line x1="962" y1="475" x2="558" y2="475" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <line x1="542" y1="490" x2="188" y2="490" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <line x1="176" y1="505" x2="68" y2="505" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="122" y="499" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">CartItem saved ✓</text>
+
+      <!-- DIVIDER 2 -->
+      <line x1="30" y1="525" x2="1040" y2="525" stroke="#e2d8c8" stroke-width="1" stroke-dasharray="8,4"/>
+      <text x="530" y="540" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-style="italic" fill="#b8892e">③ Checkout &amp; Place Order</text>
+
+      <!-- POST /checkout -->
+      <line x1="64" y1="555" x2="172" y2="555" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="116" y="549" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">submit checkout form</text>
+      <line x1="184" y1="570" x2="662" y2="570" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="423" y="564" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">POST /api/orders/checkout (JWT)</text>
+
+      <!-- validate JWT -->
+      <line x1="670" y1="585" x2="782" y2="585" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="726" y="579" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">validateToken(jwt)</text>
+      <line x1="782" y1="600" x2="674" y2="600" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="728" y="595" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">userId</text>
+
+      <!-- fetch cart items -->
+      <line x1="674" y1="617" x2="962" y2="617" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="818" y="611" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">SELECT cart_items WHERE userId</text>
+      <line x1="962" y1="632" x2="678" y2="632" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="820" y="626" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">CartItem list</text>
+
+      <!-- Insert order -->
+      <line x1="674" y1="650" x2="962" y2="650" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="818" y="644" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">INSERT orders + order_items</text>
+
+      <!-- clear cart -->
+      <line x1="674" y1="668" x2="962" y2="668" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="818" y="662" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">DELETE cart_items WHERE userId</text>
+      <line x1="962" y1="683" x2="678" y2="683" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+
+      <!-- 200 OK CheckoutResponse -->
+      <line x1="662" y1="700" x2="188" y2="700" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="425" y="694" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">200 OK CheckoutResponse{orderId, total}</text>
+      <line x1="176" y1="715" x2="68" y2="715" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="122" y="709" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">Order confirmed!</text>
+
+      <!-- DIVIDER 3 -->
+      <line x1="30" y1="740" x2="1040" y2="740" stroke="#e2d8c8" stroke-width="1" stroke-dasharray="8,4"/>
+      <text x="530" y="755" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-style="italic" fill="#5e3460">④ Admin: Update Order Status</text>
+
+      <line x1="64" y1="775" x2="172" y2="775" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="116" y="769" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">Admin: change status</text>
+      <line x1="184" y1="790" x2="662" y2="790" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="423" y="784" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">PATCH /api/admin/orders/{id}/status (ROLE_ADMIN)</text>
+      <line x1="674" y1="808" x2="962" y2="808" stroke="#5a7a5e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="818" y="802" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5a4a38">UPDATE orders SET status=?</text>
+      <line x1="962" y1="823" x2="678" y2="823" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <line x1="662" y1="840" x2="188" y2="840" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+      <text x="425" y="834" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">200 OK "Order status updated"</text>
+      <line x1="176" y1="855" x2="68" y2="855" stroke="#aaa" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arr3dash)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     4. CLASS DIAGRAM
+══════════════════════════════════════════════ -->
+<section id="sec4" class="diagram-section s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Class Diagram</h2>
+    <span class="section-tag">Domain Model</span>
+  </div>
+  <p class="section-desc">Full class model showing entity classes (User, Product, CartItem, Order, OrderItem, ContactMessage), service classes (AuthService, ProductService, CartService, OrderService), and key relationships including associations, enumerations, and dependencies.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1100 980" xmlns="http://www.w3.org/2000/svg" width="1100" height="980">
+      <defs>
+        <marker id="arrInherit" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+          <polygon points="0,0 10,5 0,10" fill="none" stroke="#5e3460" stroke-width="1.5"/>
+        </marker>
+        <marker id="arrAssoc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5e3460"/>
+        </marker>
+        <marker id="arrDep" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+        </marker>
+      </defs>
+      <rect width="1100" height="980" fill="#fffdf9"/>
+      <text x="550" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#5e3460">Class Diagram — American Woman Store</text>
+
+      <!-- Helper function for class box: defined inline -->
+      <!-- CLASS: User -->
+      <g transform="translate(20,50)">
+        <rect width="200" height="230" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#5e3460"/>
+        <text x="100" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">User</text>
+        <line x1="0" y1="28" x2="200" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <!-- fields -->
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- username: String</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- email: String</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- password: String</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- firstName: String</text>
+        <text x="8" y="116" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- lastName: String</text>
+        <text x="8" y="130" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- phone: String</text>
+        <text x="8" y="144" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- city: String</text>
+        <text x="8" y="158" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- role: Role</text>
+        <text x="8" y="172" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- createdAt: LocalDateTime</text>
+        <line x1="0" y1="180" x2="200" y2="180" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <!-- methods -->
+        <text x="8" y="195" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ getUsername()</text>
+        <text x="8" y="209" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ getRole()</text>
+        <text x="8" y="223" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ isAdmin(): bool</text>
+      </g>
+
+      <!-- ENUM: Role -->
+      <g transform="translate(20,300)">
+        <rect width="160" height="80" rx="3" fill="#f5f0fa" stroke="#5e3460" stroke-width="1.5"/>
+        <rect width="160" height="24" rx="3" fill="#8a6098"/>
+        <text x="80" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="white">«enumeration»</text>
+        <text x="80" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="white">Role</text>
+        <text x="8" y="40" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">ROLE_USER</text>
+        <text x="8" y="55" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">ROLE_ADMIN</text>
+      </g>
+
+      <!-- CLASS: Product -->
+      <g transform="translate(260,50)">
+        <rect width="210" height="280" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="210" height="28" rx="3" fill="#5e3460"/>
+        <text x="105" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">Product</text>
+        <line x1="0" y1="28" x2="210" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- name: String</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- description: String</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- category: String</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- sellingPrice: BigDecimal</text>
+        <text x="8" y="116" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- costPrice: BigDecimal</text>
+        <text x="8" y="130" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- sizes: String</text>
+        <text x="8" y="144" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- colors: String</text>
+        <text x="8" y="158" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- stockQuantity: int</text>
+        <text x="8" y="172" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- imageUrl: String</text>
+        <text x="8" y="186" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- newArrival: Boolean</text>
+        <text x="8" y="200" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- bestSeller: Boolean</text>
+        <text x="8" y="214" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- onSale: Boolean</text>
+        <text x="8" y="228" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- salePercentage: int</text>
+        <text x="8" y="242" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- createdAt: LocalDateTime</text>
+        <line x1="0" y1="250" x2="210" y2="250" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="8" y="265" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ getEffectivePrice(): BigDecimal</text>
+      </g>
+
+      <!-- CLASS: CartItem -->
+      <g transform="translate(510,50)">
+        <rect width="200" height="190" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#5e3460"/>
+        <text x="100" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">CartItem</text>
+        <line x1="0" y1="28" x2="200" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- userId: Long</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- productId: Long</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- quantity: int</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- size: String</text>
+        <text x="8" y="116" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- color: String</text>
+        <text x="8" y="130" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- priceSnapshot: BigDecimal</text>
+        <line x1="0" y1="138" x2="200" y2="138" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="8" y="153" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ getSubtotal(): BigDecimal</text>
+        <text x="8" y="167" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ updateQuantity(int)</text>
+        <text x="8" y="181" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ remove()</text>
+      </g>
+
+      <!-- CLASS: Order -->
+      <g transform="translate(750,50)">
+        <rect width="215" height="310" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="215" height="28" rx="3" fill="#5e3460"/>
+        <text x="107" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">Order</text>
+        <line x1="0" y1="28" x2="215" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- userId: Long</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- subtotal: BigDecimal</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- shippingFee: BigDecimal</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- total: BigDecimal</text>
+        <text x="8" y="116" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- currency: String = "USD"</text>
+        <text x="8" y="130" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- status: OrderStatus</text>
+        <text x="8" y="144" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- paymentMethod: PaymentMethod</text>
+        <text x="8" y="158" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- returnStatus: ReturnStatus</text>
+        <text x="8" y="172" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- shippingMethod: ShippingMethod</text>
+        <text x="8" y="186" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- shippingName: String</text>
+        <text x="8" y="200" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- shippingAddress: String</text>
+        <text x="8" y="214" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- cardLast4: String</text>
+        <text x="8" y="228" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- cardBrand: String</text>
+        <text x="8" y="242" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- createdAt: LocalDateTime</text>
+        <text x="8" y="256" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- items: List&lt;OrderItem&gt;</text>
+        <line x1="0" y1="264" x2="215" y2="264" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="8" y="279" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ cancel()</text>
+        <text x="8" y="293" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ requestReturn(reason)</text>
+        <text x="8" y="307" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ updateStatus(status)</text>
+      </g>
+
+      <!-- CLASS: OrderItem -->
+      <g transform="translate(750,395)">
+        <rect width="215" height="168" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="215" height="28" rx="3" fill="#5e3460"/>
+        <text x="107" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">OrderItem</text>
+        <line x1="0" y1="28" x2="215" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- order: Order</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- productId: Long</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- quantity: int</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- size: String</text>
+        <text x="8" y="116" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- color: String</text>
+        <text x="8" y="130" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- priceSnapshot: BigDecimal</text>
+        <line x1="0" y1="138" x2="215" y2="138" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="8" y="153" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ getLineTotal(): BigDecimal</text>
+      </g>
+
+      <!-- CLASS: ContactMessage -->
+      <g transform="translate(510,280)">
+        <rect width="200" height="165" rx="3" fill="#ede8f5" stroke="#5e3460" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#5e3460"/>
+        <text x="100" y="19" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" font-weight="700" fill="white">ContactMessage</text>
+        <line x1="0" y1="28" x2="200" y2="28" stroke="#5e3460" stroke-width="1"/>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- id: Long</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- name: String</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- email: String</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- message: String</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#3a2040">- createdAt: LocalDateTime</text>
+        <line x1="0" y1="110" x2="200" y2="110" stroke="#5e3460" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="8" y="125" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">+ submit()</text>
+      </g>
+
+      <!-- SERVICE CLASSES row -->
+      <!-- AuthService -->
+      <g transform="translate(20,540)">
+        <rect width="200" height="150" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#2d4a6b"/>
+        <text x="100" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#a8c4e0">«service»</text>
+        <text x="100" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="white">AuthService</text>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ register(req): AuthResponse</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ login(req): AuthResponse</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ getCurrentUser(): Profile</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ updateProfile(req)</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ changePassword(req)</text>
+      </g>
+
+      <!-- ProductService -->
+      <g transform="translate(260,540)">
+        <rect width="200" height="150" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#2d4a6b"/>
+        <text x="100" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#a8c4e0">«service»</text>
+        <text x="100" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="white">ProductService</text>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ getAll(): List&lt;ProductDto&gt;</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ getById(id): ProductDto</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ createProduct(dto)</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ updateProduct(id, dto)</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ deleteProduct(id)</text>
+      </g>
+
+      <!-- CartService -->
+      <g transform="translate(500,540)">
+        <rect width="200" height="150" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="200" height="28" rx="3" fill="#2d4a6b"/>
+        <text x="100" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#a8c4e0">«service»</text>
+        <text x="100" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="white">CartService</text>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ getCart(userId): List&lt;CartItemDto&gt;</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ addItem(req): CartItemDto</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ updateItem(id, req)</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ removeItem(id)</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ clearCart(userId)</text>
+      </g>
+
+      <!-- OrderService -->
+      <g transform="translate(740,540)">
+        <rect width="220" height="150" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="220" height="28" rx="3" fill="#2d4a6b"/>
+        <text x="110" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#a8c4e0">«service»</text>
+        <text x="110" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="white">OrderService</text>
+        <text x="8" y="46" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ checkout(userId, req): CheckoutResponse</text>
+        <text x="8" y="60" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ getAllOrders(): List&lt;Order&gt;</text>
+        <text x="8" y="74" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ updateStatus(id, status)</text>
+        <text x="8" y="88" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ approveReturn(id)</text>
+        <text x="8" y="102" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">+ rejectReturn(id)</text>
+      </g>
+
+      <!-- ENUM classes bottom -->
+      <g transform="translate(20,730)">
+        <rect width="130" height="90" rx="3" fill="#f5f0fa" stroke="#8a6098" stroke-width="1.5"/>
+        <rect width="130" height="24" rx="3" fill="#8a6098"/>
+        <text x="65" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="white">«enumeration»</text>
+        <text x="65" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white">OrderStatus</text>
+        <text x="8" y="40" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">PENDING</text>
+        <text x="8" y="53" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">CONFIRMED</text>
+        <text x="8" y="66" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">SHIPPED / DELIVERED</text>
+        <text x="8" y="79" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">CANCELLED</text>
+      </g>
+      <g transform="translate(185,730)">
+        <rect width="130" height="74" rx="3" fill="#f5f0fa" stroke="#8a6098" stroke-width="1.5"/>
+        <rect width="130" height="24" rx="3" fill="#8a6098"/>
+        <text x="65" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="white">«enumeration»</text>
+        <text x="65" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white">PaymentMethod</text>
+        <text x="8" y="40" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">COD</text>
+        <text x="8" y="53" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">CARD</text>
+      </g>
+      <g transform="translate(350,730)">
+        <rect width="160" height="90" rx="3" fill="#f5f0fa" stroke="#8a6098" stroke-width="1.5"/>
+        <rect width="160" height="24" rx="3" fill="#8a6098"/>
+        <text x="80" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="white">«enumeration»</text>
+        <text x="80" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white">ReturnStatus</text>
+        <text x="8" y="40" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">NONE / REQUESTED</text>
+        <text x="8" y="53" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">APPROVED / REJECTED</text>
+        <text x="8" y="66" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">COMPLETED</text>
+      </g>
+      <g transform="translate(545,730)">
+        <rect width="155" height="74" rx="3" fill="#f5f0fa" stroke="#8a6098" stroke-width="1.5"/>
+        <rect width="155" height="24" rx="3" fill="#8a6098"/>
+        <text x="77" y="11" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="white">«enumeration»</text>
+        <text x="77" y="22" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="white">ShippingMethod</text>
+        <text x="8" y="40" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">STANDARD ($20)</text>
+        <text x="8" y="53" font-family="DM Mono,monospace" font-size="9" fill="#3a2040">EXPRESS ($35) / OVERNIGHT ($50)</text>
+      </g>
+
+      <!-- RELATIONSHIPS -->
+      <!-- User -uses-> AuthService -->
+      <line x1="120" y1="280" x2="120" y2="540" stroke="#5e3460" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrDep)"/>
+      <text x="127" y="420" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">«uses»</text>
+
+      <!-- CartItem --> User (userId) -->
+      <line x1="510" y1="115" x2="220" y2="115" stroke="#5e3460" stroke-width="1.5" marker-end="url(#arrAssoc)"/>
+      <text x="355" y="110" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">userId</text>
+      <text x="515" y="125" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">*</text>
+      <text x="218" y="125" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">1</text>
+
+      <!-- CartItem --> Product -->
+      <line x1="510" y1="155" x2="470" y2="155" stroke="#5e3460" stroke-width="1.5" marker-end="url(#arrAssoc)"/>
+      <text x="435" y="149" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">1</text>
+
+      <!-- Order --> User -->
+      <line x1="857" y1="50" x2="120" y2="50" stroke="#5e3460" stroke-width="1.5" marker-end="url(#arrAssoc)"/>
+      <text x="488" y="44" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">userId (FK)</text>
+      <text x="850" y="48" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">*</text>
+      <text x="128" y="48" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">1</text>
+
+      <!-- Order 1 -- * OrderItem -->
+      <line x1="857" y1="360" x2="857" y2="395" stroke="#5e3460" stroke-width="1.5" marker-end="url(#arrAssoc)"/>
+      <text x="865" y="382" font-family="DM Mono,monospace" font-size="9" fill="#5e3460">1..*</text>
+
+      <!-- Service → Entity deps (dashed lines) -->
+      <line x1="360" y1="540" x2="360" y2="330" stroke="#2d4a6b" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrDep)"/>
+      <line x1="600" y1="540" x2="600" y2="240" stroke="#2d4a6b" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrDep)"/>
+      <line x1="850" y1="540" x2="857" y2="360" stroke="#2d4a6b" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#arrDep)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     5. ERD
+══════════════════════════════════════════════ -->
+<section id="sec5" class="diagram-section s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Entity Relationship Diagram</h2>
+    <span class="section-tag">Database Schema</span>
+  </div>
+  <p class="section-desc">Crow's foot notation ERD showing all six database tables (users, products, cart_items, orders, order_items, contact_messages), their columns, data types, primary/foreign keys, and cardinality relationships.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1100 840" xmlns="http://www.w3.org/2000/svg" width="1100" height="840">
+      <defs>
+        <marker id="crowMany" markerWidth="12" markerHeight="12" refX="3" refY="6" orient="auto">
+          <line x1="0" y1="0" x2="8" y2="6" stroke="#2d4a6b" stroke-width="1.5"/>
+          <line x1="0" y1="12" x2="8" y2="6" stroke="#2d4a6b" stroke-width="1.5"/>
+          <line x1="4" y1="0" x2="4" y2="12" stroke="#2d4a6b" stroke-width="1.5"/>
+        </marker>
+        <marker id="one" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+          <line x1="8" y1="0" x2="8" y2="12" stroke="#2d4a6b" stroke-width="1.5"/>
+          <line x1="5" y1="0" x2="5" y2="12" stroke="#2d4a6b" stroke-width="1.5"/>
+        </marker>
+      </defs>
+      <rect width="1100" height="840" fill="#fffdf9"/>
+      <text x="550" y="30" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#2d4a6b">Entity Relationship Diagram — American Woman Store</text>
+
+      <!-- TABLE: users -->
+      <g transform="translate(20,50)">
+        <rect width="220" height="272" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="220" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="110" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">users</text>
+        <!-- PK -->
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT NOT NULL</text>
+        <line x1="5" y1="52" x2="215" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    username VARCHAR(255) UQ</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    email VARCHAR(255) UQ</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    password VARCHAR(255) NN</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    first_name VARCHAR(100)</text>
+        <text x="10" y="122" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    last_name VARCHAR(100)</text>
+        <text x="10" y="136" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    phone VARCHAR(50)</text>
+        <text x="10" y="150" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    city VARCHAR(100)</text>
+        <text x="10" y="164" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    address1 VARCHAR(255)</text>
+        <text x="10" y="178" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    address2 VARCHAR(255)</text>
+        <text x="10" y="192" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    role ENUM('ROLE_USER',</text>
+        <text x="10" y="206" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">              'ROLE_ADMIN') NN</text>
+        <text x="10" y="220" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    created_at DATETIME NN</text>
+        <!-- Legend row -->
+        <line x1="5" y1="228" x2="215" y2="228" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="242" font-family="DM Mono,monospace" font-size="8.5" fill="#777">PK=Primary Key  UQ=Unique</text>
+        <text x="10" y="254" font-family="DM Mono,monospace" font-size="8.5" fill="#777">NN=Not Null  FK=Foreign Key</text>
+        <text x="10" y="266" font-family="DM Mono,monospace" font-size="8.5" fill="#777">AI=Auto Increment</text>
+      </g>
+
+      <!-- TABLE: products -->
+      <g transform="translate(290,50)">
+        <rect width="230" height="322" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="230" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="115" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">products</text>
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT AI NN</text>
+        <line x1="5" y1="52" x2="225" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    name VARCHAR(255) NN</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    description TEXT</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    category VARCHAR(100)</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    selling_price DECIMAL(10,2) NN</text>
+        <text x="10" y="122" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    cost_price DECIMAL(10,2) NN</text>
+        <text x="10" y="136" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    sizes VARCHAR(255)</text>
+        <text x="10" y="150" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    colors VARCHAR(255)</text>
+        <text x="10" y="164" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    stock_quantity INT NN DEF 0</text>
+        <text x="10" y="178" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    image_url VARCHAR(500)</text>
+        <text x="10" y="192" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    new_arrival TINYINT(1) DEF 0</text>
+        <text x="10" y="206" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    best_seller TINYINT(1) DEF 0</text>
+        <text x="10" y="220" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    on_sale TINYINT(1) DEF 0</text>
+        <text x="10" y="234" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    sale_percentage INT DEF 0</text>
+        <text x="10" y="248" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    created_at DATETIME NN</text>
+        <line x1="5" y1="256" x2="225" y2="256" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="270" font-family="DM Mono,monospace" font-size="9" fill="#777">INDEX: name, category</text>
+        <text x="10" y="284" font-family="DM Mono,monospace" font-size="9" fill="#777">INDEX: new_arrival, best_seller</text>
+        <text x="10" y="298" font-family="DM Mono,monospace" font-size="9" fill="#777">INDEX: on_sale</text>
+        <text x="10" y="312" font-family="DM Mono,monospace" font-size="9" fill="#777">CHECK: sale_percentage 0..100</text>
+      </g>
+
+      <!-- TABLE: cart_items -->
+      <g transform="translate(580,50)">
+        <rect width="220" height="220" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="220" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="110" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">cart_items</text>
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT AI NN</text>
+        <line x1="5" y1="52" x2="215" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#c0392b" font-weight="700">FK</text>
+        <text x="35" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">user_id BIGINT NN</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#c0392b" font-weight="700">FK</text>
+        <text x="35" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">product_id BIGINT NN</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    quantity INT NN</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    size VARCHAR(50)</text>
+        <text x="10" y="122" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    color VARCHAR(50)</text>
+        <text x="10" y="136" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    price_snapshot DECIMAL(10,2) NN</text>
+        <line x1="5" y1="144" x2="215" y2="144" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="158" font-family="DM Mono,monospace" font-size="9" fill="#777">FK user_id → users(id)</text>
+        <text x="10" y="172" font-family="DM Mono,monospace" font-size="9" fill="#777">FK product_id → products(id)</text>
+        <text x="10" y="186" font-family="DM Mono,monospace" font-size="9" fill="#777">ON DELETE CASCADE</text>
+        <text x="10" y="200" font-family="DM Mono,monospace" font-size="9" fill="#777">CHECK: quantity >= 1</text>
+      </g>
+
+      <!-- TABLE: orders -->
+      <g transform="translate(20,420)">
+        <rect width="260" height="366" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="260" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="130" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">orders</text>
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT AI NN</text>
+        <line x1="5" y1="52" x2="255" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#c0392b" font-weight="700">FK</text>
+        <text x="35" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">user_id BIGINT NN</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    subtotal DECIMAL(10,2) NN</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_fee DECIMAL(10,2) NN</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    total DECIMAL(10,2) NN</text>
+        <text x="10" y="122" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    currency VARCHAR(10) DEF 'USD'</text>
+        <text x="10" y="136" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    status ENUM('PENDING','CONFIRMED',</text>
+        <text x="10" y="150" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">         'SHIPPED','DELIVERED','CANCELLED')</text>
+        <text x="10" y="164" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    payment_method ENUM('COD','CARD') NN</text>
+        <text x="10" y="178" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_method ENUM('STANDARD',</text>
+        <text x="10" y="192" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">         'EXPRESS','OVERNIGHT') NN</text>
+        <text x="10" y="206" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    return_status ENUM('NONE','REQUESTED',</text>
+        <text x="10" y="220" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">         'APPROVED','REJECTED','COMPLETED')</text>
+        <text x="10" y="234" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_name VARCHAR(255) NN</text>
+        <text x="10" y="248" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_address VARCHAR(500) NN</text>
+        <text x="10" y="262" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_city VARCHAR(100) NN</text>
+        <text x="10" y="276" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_state VARCHAR(100) NN</text>
+        <text x="10" y="290" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    shipping_zip VARCHAR(20) NN</text>
+        <text x="10" y="304" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    card_holder_name VARCHAR(255)</text>
+        <text x="10" y="318" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    card_last4 VARCHAR(4)</text>
+        <text x="10" y="332" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    card_brand VARCHAR(50)</text>
+        <text x="10" y="346" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    created_at DATETIME NN</text>
+        <line x1="5" y1="354" x2="255" y2="354" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="368" font-family="DM Mono,monospace" font-size="9" fill="#777">FK user_id → users(id)</text>
+      </g>
+
+      <!-- TABLE: order_items -->
+      <g transform="translate(330,420)">
+        <rect width="235" height="210" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="235" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="117" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">order_items</text>
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT AI NN</text>
+        <line x1="5" y1="52" x2="230" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#c0392b" font-weight="700">FK</text>
+        <text x="35" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">order_id BIGINT NN</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    product_id BIGINT NN</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    quantity INT NN</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    size VARCHAR(50)</text>
+        <text x="10" y="122" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    color VARCHAR(50)</text>
+        <text x="10" y="136" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    price_snapshot DECIMAL(10,2) NN</text>
+        <line x1="5" y1="144" x2="230" y2="144" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="158" font-family="DM Mono,monospace" font-size="9" fill="#777">FK order_id → orders(id)</text>
+        <text x="10" y="172" font-family="DM Mono,monospace" font-size="9" fill="#777">ON DELETE CASCADE</text>
+        <text x="10" y="186" font-family="DM Mono,monospace" font-size="9" fill="#777">CHECK: quantity >= 1</text>
+        <text x="10" y="200" font-family="DM Mono,monospace" font-size="9" fill="#777">product_id NOT a hard FK (snapshot)</text>
+      </g>
+
+      <!-- TABLE: contact_messages -->
+      <g transform="translate(620,420)">
+        <rect width="220" height="180" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="220" height="30" rx="3" fill="#2d4a6b"/>
+        <text x="110" y="21" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">contact_messages</text>
+        <text x="10" y="48" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+        <text x="35" y="48" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">id BIGINT AI NN</text>
+        <line x1="5" y1="52" x2="215" y2="52" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="66" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    name VARCHAR(255) NN</text>
+        <text x="10" y="80" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    email VARCHAR(255) NN</text>
+        <text x="10" y="94" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    message TEXT NN</text>
+        <text x="10" y="108" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">    created_at DATETIME NN</text>
+        <line x1="5" y1="116" x2="215" y2="116" stroke="#a0b8d0" stroke-width="0.5"/>
+        <text x="10" y="130" font-family="DM Mono,monospace" font-size="9" fill="#777">Standalone — no FK</text>
+        <text x="10" y="144" font-family="DM Mono,monospace" font-size="9" fill="#777">INDEX: created_at</text>
+        <text x="10" y="158" font-family="DM Mono,monospace" font-size="9" fill="#777">INDEX: email</text>
+      </g>
+
+      <!-- ERD RELATIONSHIP LINES -->
+      <!-- users 1 — * cart_items (user_id) -->
+      <line x1="240" y1="160" x2="580" y2="115" stroke="#2d4a6b" stroke-width="1.8"/>
+      <text x="380" y="125" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">1</text>
+      <text x="575" y="108" text-anchor="end" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">N</text>
+      <!-- crow's foot -->
+      <line x1="565" y1="108" x2="580" y2="115" stroke="#2d4a6b" stroke-width="1.8"/>
+      <line x1="565" y1="122" x2="580" y2="115" stroke="#2d4a6b" stroke-width="1.8"/>
+
+      <!-- products 1 — * cart_items (product_id) -->
+      <line x1="520" y1="160" x2="600" y2="130" stroke="#2d4a6b" stroke-width="1.8"/>
+      <text x="555" y="140" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">1:N</text>
+
+      <!-- users 1 — * orders (user_id) -->
+      <line x1="130" y1="322" x2="130" y2="420" stroke="#2d4a6b" stroke-width="1.8"/>
+      <text x="140" y="375" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">1</text>
+      <text x="140" y="415" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">N</text>
+      <!-- crow's foot bottom -->
+      <line x1="120" y1="408" x2="130" y2="420" stroke="#2d4a6b" stroke-width="1.8"/>
+      <line x1="140" y1="408" x2="130" y2="420" stroke="#2d4a6b" stroke-width="1.8"/>
+
+      <!-- orders 1 — * order_items (order_id) -->
+      <line x1="280" y1="560" x2="330" y2="500" stroke="#2d4a6b" stroke-width="1.8"/>
+      <text x="295" y="525" font-family="DM Mono,monospace" font-size="9" fill="#2d4a6b">1:N</text>
+      <line x1="318" y1="490" x2="330" y2="500" stroke="#2d4a6b" stroke-width="1.8"/>
+      <line x1="318" y1="510" x2="330" y2="500" stroke="#2d4a6b" stroke-width="1.8"/>
+
+      <!-- Legend box -->
+      <rect x="855" y="440" width="230" height="165" rx="3" fill="white" stroke="#e2d8c8" stroke-width="1"/>
+      <rect x="855" y="440" width="230" height="26" rx="3" fill="#2d4a6b"/>
+      <text x="970" y="458" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="white" letter-spacing="2">ERD LEGEND</text>
+      <text x="870" y="484" font-family="DM Mono,monospace" font-size="10" fill="#b8892e" font-weight="700">PK</text>
+      <text x="895" y="484" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">Primary Key (AI BIGINT)</text>
+      <text x="870" y="500" font-family="DM Mono,monospace" font-size="10" fill="#c0392b" font-weight="700">FK</text>
+      <text x="895" y="500" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">Foreign Key Reference</text>
+      <text x="870" y="516" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">NN  Not Null Constraint</text>
+      <text x="870" y="532" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">UQ  Unique Constraint</text>
+      <text x="870" y="548" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">AI  Auto Increment</text>
+      <text x="870" y="564" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">DEF Default Value</text>
+      <line x1="865" y1="572" x2="1075" y2="572" stroke="#e2d8c8" stroke-width="0.5"/>
+      <line x1="870" y1="590" x2="920" y2="590" stroke="#2d4a6b" stroke-width="2"/>
+      <line x1="908" y1="584" x2="920" y2="590" stroke="#2d4a6b" stroke-width="2"/>
+      <line x1="908" y1="596" x2="920" y2="590" stroke="#2d4a6b" stroke-width="2"/>
+      <text x="930" y="595" font-family="DM Mono,monospace" font-size="10" fill="#1a2d40">One-to-Many (FK end)</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     6. CLOUD ARCHITECTURE
+══════════════════════════════════════════════ -->
+<section id="sec6" class="diagram-section s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Cloud Architecture</h2>
+    <span class="section-tag">Deployment</span>
+  </div>
+  <p class="section-desc">Shows the newly implemented Microservices architecture utilizing a Eureka Service Registry and an API Gateway to handle all frontend proxy requests.</p>
+  <div class="diagram-box">
+    <div class="mermaid">
+      graph TD
+        Client((Client Browser))
+        
+        subgraph "Frontend Layer"
+          NGINX[Nginx Server :8091]
+        end
+        
+        subgraph "API Gateway Layer"
+          Gateway[Spring Cloud API Gateway :8080]
+        end
+        
+        subgraph "Service Registry"
+          Eureka[Netflix Eureka Server :8761]
+        end
+        
+        subgraph "Microservices Layer"
+          Backend[American Women Store Backend :8090]
+        end
+        
+        subgraph "Database Layer"
+          DB[(MySQL :3306)]
+        end
+        
+        Client -->|HTTP GET/POST| NGINX
+        NGINX -->|Proxy /api/**| Gateway
+        Gateway -.->|Query Registry| Eureka
+        Backend -.->|Register| Eureka
+        Gateway -->|Route Traffic| Backend
+        Backend -->|JPA/JDBC| DB
+        
+        classDef default fill:#fff0f3,stroke:#c8607a,stroke-width:2px,color:#1a1008,font-family:DM Mono;
+        classDef db fill:#d5e2f0,stroke:#2d4a6b,stroke-width:2px,color:#1a1008;
+        classDef gw fill:#fdf0e8,stroke:#b8892e,stroke-width:2px;
+        classDef registry fill:#ede8f5,stroke:#5e3460,stroke-width:2px;
+        
+        class Gateway gw;
+        class Eureka registry;
+        class DB db;
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     7. OCL CONSTRAINTS
+══════════════════════════════════════════════ -->
+<section id="sec7" class="diagram-section s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 class="section-title">OCL Constraints</h2>
+    <span class="section-tag">Object Constraint Language</span>
+  </div>
+  <p class="section-desc">Formal OCL invariants defined in <code>store.ocl</code> and enforced at runtime by <code>OclValidationService</code>. Each constraint is validated before persistence — violations throw structured <code>OclValidationException</code> responses with invariant name, field, and message.</p>
+  <div class="diagram-box">
+    <svg viewBox="0 0 1100 1020" xmlns="http://www.w3.org/2000/svg" width="1100" height="1020">
+      <rect width="1100" height="1020" fill="#fffdf9"/>
+      <text x="550" y="35" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" font-weight="700" fill="#c0392b">OCL Constraints — store.ocl</text>
+      <text x="550" y="55" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="13" fill="#888">Runtime invariants enforced by OclValidationService before every create / update operation</text>
+
+      <!-- ── CONTEXT: User ── -->
+      <g transform="translate(30,80)">
+        <rect width="500" height="200" rx="5" fill="#fff0f3" stroke="#c0392b" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#c0392b"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#fde8e8" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">User</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">usernameNotEmpty:</text>
+        <text x="200" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">username &lt;&gt; null and username.size() &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailContainsAt:</text>
+        <text x="200" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.indexOf('@') &gt; 0</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">roleValid:</text>
+        <text x="200" y="108" font-family="DM Mono,monospace" font-size="10" fill="#888">role = 'ROLE_USER' or role = 'ROLE_ADMIN'</text>
+
+        <text x="16" y="134" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="134" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">passwordMinLength:</text>
+        <text x="200" y="134" font-family="DM Mono,monospace" font-size="10" fill="#888">password &lt;&gt; null and password.size() &gt;= 6</text>
+
+        <text x="16" y="160" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">inv</text>
+        <text x="45" y="160" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">phoneNumeric:</text>
+        <text x="200" y="160" font-family="DM Mono,monospace" font-size="10" fill="#888">phone = null or phone.matches('^[0-9]+$')</text>
+
+        <!-- field badges -->
+        <rect x="16" y="175" width="65" height="16" rx="3" fill="#fde8e8" stroke="#c0392b" stroke-width="0.5"/>
+        <text x="48" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#c0392b">5 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: Product ── -->
+      <g transform="translate(570,80)">
+        <rect width="500" height="200" rx="5" fill="#fdf0e8" stroke="#b8892e" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#b8892e"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#f5e9cb" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">Product</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">sellingPricePositive:</text>
+        <text x="230" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">sellingPrice &gt; 0.0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">stockQuantityNonNegative:</text>
+        <text x="260" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">stockQuantity &gt;= 0</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">salePercentageRange:</text>
+        <text x="230" y="108" font-family="DM Mono,monospace" font-size="10" fill="#888">salePercentage &gt;= 0 and salePercentage &lt;= 100</text>
+
+        <text x="16" y="134" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">inv</text>
+        <text x="45" y="134" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">onSaleImpliesPercentage:</text>
+        <text x="255" y="134" font-family="DM Mono,monospace" font-size="10" fill="#888">not onSale or salePercentage &gt; 0</text>
+
+        <rect x="16" y="175" width="65" height="16" rx="3" fill="#fdf0e8" stroke="#b8892e" stroke-width="0.5"/>
+        <text x="48" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#b8892e">4 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: Order ── -->
+      <g transform="translate(30,320)">
+        <rect width="500" height="280" rx="5" fill="#ddeadf" stroke="#5a7a5e" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#5a7a5e"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#ddeadf" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">Order</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">totalEqualsSubtotalPlusShipping:</text>
+        <text x="310" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">total = subtotal + shippingFee</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">hasAtLeastOneItem:</text>
+        <text x="220" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">items-&gt;size() &gt;= 1</text>
+
+        <text x="16" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="108" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">confirmedOrdersCannotBeCancelled:</text>
+        <text x="45" y="122" font-family="DM Mono,monospace" font-size="10" fill="#888">(status = 'CONFIRMED' or 'SHIPPED' or 'DELIVERED') implies status &lt;&gt; 'CANCELLED'</text>
+
+        <text x="16" y="148" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="148" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">returnOnlyWhenDelivered:</text>
+        <text x="260" y="148" font-family="DM Mono,monospace" font-size="10" fill="#888">returnStatus = 'REQUESTED' implies status = 'DELIVERED'</text>
+
+        <text x="16" y="174" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="174" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">confirmDeliveryOnlyWhenShipped:</text>
+        <text x="300" y="174" font-family="DM Mono,monospace" font-size="10" fill="#888">transition SHIPPED → DELIVERED enforced</text>
+
+        <text x="16" y="200" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="200" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">shippingZipNumeric:</text>
+        <text x="230" y="200" font-family="DM Mono,monospace" font-size="10" fill="#888">shippingZip = null or shippingZip.matches('^[0-9]+$')</text>
+
+        <text x="16" y="226" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">inv</text>
+        <text x="45" y="226" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">shippingPhoneNumeric:</text>
+        <text x="240" y="226" font-family="DM Mono,monospace" font-size="10" fill="#888">shippingPhone = null or shippingPhone.matches('^[0-9]+$')</text>
+
+        <rect x="16" y="253" width="65" height="16" rx="3" fill="#ddeadf" stroke="#5a7a5e" stroke-width="0.5"/>
+        <text x="48" y="264" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#5a7a5e">7 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: OrderItem ── -->
+      <g transform="translate(570,320)">
+        <rect width="500" height="130" rx="5" fill="#e8d8ea" stroke="#5e3460" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#5e3460"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#e8d8ea" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">OrderItem</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">quantityPositive:</text>
+        <text x="200" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">quantity &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">priceSnapshotPositive:</text>
+        <text x="230" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">priceSnapshot &gt; 0.0</text>
+
+        <rect x="16" y="103" width="65" height="16" rx="3" fill="#e8d8ea" stroke="#5e3460" stroke-width="0.5"/>
+        <text x="48" y="114" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#5e3460">2 invariants</text>
+      </g>
+
+      <!-- ── CONTEXT: NewsletterSubscriber ── -->
+      <g transform="translate(570,490)">
+        <rect width="500" height="130" rx="5" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="2"/>
+        <rect width="500" height="32" rx="5" fill="#2d4a6b"/>
+        <text x="250" y="14" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#d5e2f0" letter-spacing="2">CONTEXT</text>
+        <text x="250" y="26" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" font-weight="700" fill="white">NewsletterSubscriber</text>
+
+        <text x="16" y="56" font-family="DM Mono,monospace" font-size="11" fill="#2d4a6b" font-weight="700">inv</text>
+        <text x="45" y="56" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailNotEmpty:</text>
+        <text x="180" y="56" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.size() &gt; 0</text>
+
+        <text x="16" y="82" font-family="DM Mono,monospace" font-size="11" fill="#2d4a6b" font-weight="700">inv</text>
+        <text x="45" y="82" font-family="DM Mono,monospace" font-size="11" fill="#5a4a38">emailContainsAt:</text>
+        <text x="195" y="82" font-family="DM Mono,monospace" font-size="10" fill="#888">email &lt;&gt; null and email.indexOf('@') &gt; 0</text>
+
+        <rect x="16" y="103" width="65" height="16" rx="3" fill="#d5e2f0" stroke="#2d4a6b" stroke-width="0.5"/>
+        <text x="48" y="114" text-anchor="middle" font-family="DM Mono,monospace" font-size="8" fill="#2d4a6b">2 invariants</text>
+      </g>
+
+      <!-- ── ENFORCEMENT FLOW ── -->
+      <g transform="translate(30,660)">
+        <rect width="1040" height="100" rx="5" fill="white" stroke="#e2d8c8" stroke-width="1"/>
+        <text x="520" y="20" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888" letter-spacing="2">RUNTIME ENFORCEMENT FLOW</text>
+
+        <!-- Flow boxes -->
+        <rect x="20" y="35" width="170" height="42" rx="4" fill="#fff0f3" stroke="#c8607a" stroke-width="1.5"/>
+        <text x="105" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c8607a">Service Layer</text>
+        <text x="105" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">create() / update()</text>
+
+        <text x="210" y="60" font-family="DM Mono,monospace" font-size="16" fill="#b8892e">→</text>
+
+        <rect x="235" y="35" width="200" height="42" rx="4" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="335" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c0392b">OclValidationService</text>
+        <text x="335" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">validate(entity)</text>
+
+        <text x="455" y="60" font-family="DM Mono,monospace" font-size="16" fill="#b8892e">→</text>
+
+        <rect x="480" y="35" width="140" height="42" rx="4" fill="#d5ead7" stroke="#5a7a5e" stroke-width="1.5"/>
+        <text x="550" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#5a7a5e">✓ Pass</text>
+        <text x="550" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">persist to DB</text>
+
+        <text x="640" y="60" font-family="DM Mono,monospace" font-size="11" fill="#888">|</text>
+
+        <rect x="670" y="35" width="140" height="42" rx="4" fill="#fde8e8" stroke="#c0392b" stroke-width="1.5"/>
+        <text x="740" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#c0392b">✗ Fail</text>
+        <text x="740" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">OclValidationException</text>
+
+        <text x="830" y="60" font-family="DM Mono,monospace" font-size="16" fill="#c0392b">→</text>
+
+        <rect x="855" y="35" width="165" height="42" rx="4" fill="#f5f0fa" stroke="#5e3460" stroke-width="1.5"/>
+        <text x="937" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#5e3460">400 Bad Request</text>
+        <text x="937" y="68" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888">{invariant, field, msg}</text>
+      </g>
+
+      <!-- Summary box -->
+      <g transform="translate(30,790)">
+        <rect width="1040" height="50" rx="5" fill="#faf6ef" stroke="#e2d8c8" stroke-width="1"/>
+        <text x="520" y="20" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#888" letter-spacing="2">SUMMARY</text>
+        <text x="130" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#c0392b" font-weight="700">5 Contexts</text>
+        <text x="350" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#b8892e" font-weight="700">20 Invariants</text>
+        <text x="580" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5a7a5e" font-weight="700">Source: store.ocl</text>
+        <text x="830" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#5e3460" font-weight="700">Enforced: OclValidationService.java</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  American Woman Store · SRS Diagrams · Spring Boot 3 + MySQL · Generated May 2026
+</footer>
+
+<script>
+  // Smooth scroll + active nav highlight
+  const btns = document.querySelectorAll('.toc-btn');
+  const sections = document.querySelectorAll('.diagram-section');
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        btns.forEach(b => b.classList.remove('active'));
+        const id = e.target.id;
+        const match = document.querySelector(`.toc-btn[href="#${id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => io.observe(s));
+
+  btns.forEach(b => {
+    b.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(b.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { fontFamily: 'DM Mono' } });
+</script>
+</body>
+</html>
