@@ -2,21 +2,6 @@
 
 A comprehensive, cloud-native e-commerce platform built with Spring Boot 3, Spring Cloud, and a modern HTML/CSS/JavaScript frontend. This project has been migrated from a monolith architecture to a fully functional microservices ecosystem utilizing an API Gateway and Service Discovery.
 
-## 🎓 Grading Criteria Evaluation [20/20 Points]
-
-This project was developed strictly adhering to the grading rubric, fulfilling all criteria:
-
-- [x] **SRS (Use Case, Activity, Sequence, Class, ERD) (2 pts)**: All diagrams provided in `AmericanWomanStore_SRS_Diagrams.html`.
-- [x] **Implementation (APIs) (4 pts)**: Full RESTful backend with multiple resource controllers.
-- [x] **Object Constraint Language (OCL) (2 pts)**: Custom `OclValidationService` enforcing strict business constraints.
-- [x] **Aspect Oriented Programming (AOP) (3 pts)**: Implemented via `@Aspect` for centralized monitoring and logging.
-- [x] **Docker (2 pts)**: Entire application is fully containerized using `docker-compose`.
-- [x] **Clean Code (2 pts)**: Strictly layered architecture, DTO patterns, and global exception handling.
-- [x] **Design Pattern (2 pts)**: Strategy Pattern (Payment & Shipping) and Factory Pattern (Orders) implemented.
-- [x] **Microservices & Cloud (3 pts)**: Features Netflix Eureka (Registry) and Spring Cloud Gateway (Routing).
-
----
-
 ## 🏗️ Cloud-Native Microservices Architecture
 
 The system is broken down into autonomous services interacting via REST over HTTP:
