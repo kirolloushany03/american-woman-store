@@ -42,7 +42,7 @@ The absolute easiest way to run the entire cluster is using Docker Compose.
 3. **Wait a minute** for Eureka and the Gateway to fully initialize and for the Backend to register itself.
 
 ### Access URLs
-- **Frontend App**: [http://localhost](http://localhost) (Nginx standard port 80)
+- **Frontend App**: [http://localhost:8091](http://localhost:8091) (Nginx standard port 80)
 - **API Gateway**: [http://localhost:8080](http://localhost:8080)
 - **Eureka Dashboard**: [http://localhost:8761](http://localhost:8761)
 
